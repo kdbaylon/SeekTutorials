@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:label="@string/app_name"
+    android:hint="@string/search"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.tutorHome.subjects.TutorSubjectsFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:background="@null"
+                    android:tint="@color/colorPrimaryDark"
+                    android:id="@+id/back"
+                    android:layout_width="73dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
+                    android:minHeight="?actionBarSize"
+                    app:srcCompat="@drawable/round_arrow_back_24" />
+                <TextView
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="6dp"
+                    android:textStyle="bold"
+                    android:text="@string/edit_subject"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/editButton"
+                    style="@style/Widget.SeekTutorials.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:text="@string/edit" />
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/subj_layout"
+            style="@style/Widget.SeekTutorials.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:hint="@string/select_subject"
+            app:layout_constraintTop_toBottomOf="@+id/appbar"
+            tools:layout_editor_absoluteX="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/subj"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="textLongMessage"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/desc_short"
+            style="@style/Widget.SeekTutorials.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:hint="@string/subject_desc"
+            app:layout_constraintTop_toBottomOf="@+id/subj_layout"
+            tools:layout_editor_absoluteX="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/subj_desc"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="textLongMessage"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/days_avail_layout"
+            style="@style/Widget.SeekTutorials.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:hint="@string/days_avail"
+            app:layout_constraintTop_toBottomOf="@+id/desc_short"
+            tools:layout_editor_absoluteX="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/days"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/time_layout"
+            style="@style/Widget.SeekTutorials.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:hint="@string/time"
+            app:layout_constraintTop_toBottomOf="@+id/days_avail_layout"
+            tools:layout_editor_absoluteX="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/rate_layout"
+            style="@style/Widget.SeekTutorials.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:hint="@string/fee"
+            app:layout_constraintTop_toBottomOf="@+id/time_layout"
+            tools:layout_editor_absoluteX="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fee"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tutor_navigation"
+        android:enabled="true"
+        android:icon="@drawable/round_school_24"
+        android:title="@string/tutor_tab"/>
+    <item
+        android:id="@+id/tutee_navigation"
+        android:enabled="true"
+        android:icon="@drawable/round_face_24"
+        android:title="@string/tutee_tab"/>
+</menu>

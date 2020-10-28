@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/profile_navigation"
+        android:enabled="true"
+        android:icon="@drawable/round_person_24"
+        android:title="@string/profile"/>
+    <item
+        android:id="@+id/subjects_navigation"
+        android:enabled="true"
+        android:icon="@drawable/round_import_contacts_24"
+        android:title="@string/subjects"/>
+    <item
+        android:id="@+id/reviews_navigation"
+        android:enabled="true"
+        android:icon="@drawable/round_star_half_24"
+        android:title="@string/reviews"/>
+    <item
+        android:id="@+id/requests_navigation"
+        android:enabled="true"
+        android:icon="@drawable/round_insert_invitation_24"
+        android:title="@string/bookings"/>
+    <item
+        android:id="@+id/messages_navigation"
+        android:enabled="true"
+        android:icon="@drawable/round_chat_24"
+        android:title="@string/messages"/>
+</menu>

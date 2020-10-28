@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "61224848583",
+    "firebase_url": "https://seek-tutors.firebaseio.com",
+    "project_id": "seek-tutors",
+    "storage_bucket": "seek-tutors.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61224848583:android:304b68578a392b063182e2",
+        "android_client_info": {
+          "package_name": "com.example.seektutorials"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61224848583-3iakjsm1lefj8eckfevc85m0gj2f7j1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB7ZwN4hg7oc8CwnQ3M3rJGLUYWixS3ZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61224848583-3iakjsm1lefj8eckfevc85m0gj2f7j1r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

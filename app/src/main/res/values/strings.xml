@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">Seek Tutorials</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_log_in">Log in</string>
+    <string name="logout">Log out</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_password">Password must be >8 characters</string>
+    <string name="login_failed">"Sign in failed"</string>
+    <!--Strings related to register -->
+    <string name="reg_as">Register as a</string>
+    <string name="tutee_tab">Tutee</string>
+    <string name="tutor_tab">Tutor</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="mobile_no">Mobile Number</string>
+    <string name="school">School/s Attended/ing</string>
+    <string name="course">Degree Program</string>
+    <string name="location">Location/City</string>
+    <string name="photo">Upload Profile Photo</string>
+    <!--Strings related to tutor Home -->
+    <string name="profile">Profile</string>
+    <string name="subjects">Subjects</string>
+    <string name="reviews">Reviews</string>
+    <!--Strings related to tutee and tutor -->
+    <string name="home">Home</string>
+    <string name="search_sub_tutor">Search for subject or tutor</string>
+    <string name="bookings">Bookings</string>
+    <string name="contacts">Contacts</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="book">Book a Session</string>
+    <string name="rate">Rate tutor</string>
+    <string name="leave_review">Leave a Review</string>
+    <string name="comment">Comments about this tutor…</string>
+    <string name="submit">Submit</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="about">About Me</string>
+    <string name="averating">Average Rating</string>
+    <string name="indivrating">Individual Ratings</string>
+    <string name="messages">Messages</string>
+    <string name="classes">Classes</string>
+    <string name="more">See More</string>
+    <string name="request_pending">Pending</string>
+    <string name="request_accepted">Accepted</string>
+    <string name="status_finished">Finished</string>
+    <string name="status_ongoing">On-going</string>
+    <string name="request_accept">Accept</string>
+    <string name="request_decline">Decline</string>
+    <string name="make_finished">Mark as finished</string>
+    <string name="days_avail">Days Available</string>
+    <string name="time">Time</string>
+    <!---booking tabs-->
+    <string name="pending">Pending</string>
+    <string name="accepted">Accepted</string>
+    <string name="finished">Finished</string>
+    <!---subject-->
+    <string name="select_subject">Select subject</string>
+    <string name="add_subject">New Subject</string>
+    <string name="edit_subject">Edit Subject</string>
+    <string name="add">Add</string>
+    <string name="view_tutor_profile">View Profile</string>
+    <string name="message_tutor">Message</string>
+    <string name="send_request">Book Session</string>
+    <string name="date">Enter date and time</string>
+    <string name="total_fee">Total Fee:</string>
+    <string name="cancel">Cancel</string>
+    <!--Placeholders-->
+    <string name="subject_desc">Short description about the subject</string>
+    <string name="subject_specific">Specific Subject</string>
+    <string name="sched">Weekly Schedule</string>
+    <string name="fee">Hourly Fee</string>
+    <string name="space">" "</string>
+    <string name="barrier">" | "</string>
+    <string name="email">email@up.edu.ph</string>
+    <string name="contact">09123456789</string>
+    <string name="description">Short description about me</string>
+    <string name="edubg">Educational Background</string>
+    <string name="schoolsample">University of the Philippines Los Baños - 3rd year BSCS"</string>
+    <string name="degprog">Degree Program</string>
+    <string name="rating_comment">Good Job!</string>
+    <string name="loc_sample">Taguig City</string>
+    <string name="hello">Hello, ask ko lang po</string>
+    <string name="title_activity_tutee_requests">TuteeRequestsActivity</string>
+    <string name="sched_sample">01/02/2021 2PM-4PM</string>
+    <string name="fee_sample">P500</string>
+    <string name="google_sign_in">Google Sign In</string>
+</resources>
