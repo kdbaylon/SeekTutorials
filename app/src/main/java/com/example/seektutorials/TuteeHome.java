@@ -8,13 +8,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.seektutorials.ui.login.LoginActivity;
 import com.example.seektutorials.ui.tuteeHome.TuteeMessagesFragment;
-import com.example.seektutorials.ui.tuteeHome.TuteeProfileFragment;
+import com.example.seektutorials.ui.tuteeHome.profile.EditTuteeProfileFragment;
+import com.example.seektutorials.ui.tuteeHome.profile.TuteeProfileFragment;
 import com.example.seektutorials.ui.tuteeHome.TuteeBookingsFragment;
 import com.example.seektutorials.ui.tuteeHome.search.TuteeSearchFragment;
+import com.example.seektutorials.ui.tutorHome.profile.EditTutorProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -60,5 +64,12 @@ public class TuteeHome extends AppCompatActivity{
         Intent intent = new Intent(TuteeHome.this, LoginActivity.class);
         startActivity(intent);
         TuteeHome.this.finish();
+    }
+    public void editProfile(MenuItem item) {
+        openFragment(new EditTuteeProfileFragment());
+    }
+    public void backButton(View view) {
+        this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+        this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
     }
 }

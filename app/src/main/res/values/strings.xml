@@ -57,6 +57,7 @@
     <string name="make_finished">Mark as finished</string>
     <string name="days_avail">Days Available</string>
     <string name="time">Time</string>
+    <string name="edit_profile">Edit Profile</string>
     <!---booking tabs-->
     <string name="pending">Pending</string>
     <string name="accepted">Accepted</string>
@@ -72,6 +73,10 @@
     <string name="date">Enter date and time</string>
     <string name="total_fee">Total Fee:</string>
     <string name="cancel">Cancel</string>
+    <!--Chat-->
+    <string name="send">Send</string>
+    <string name="enter_msg_here">Enter Message Here…</string>
+    <string name="no_msgs">No Messages</string>
     <!--Placeholders-->
     <string name="subject_desc">Short description about the subject</string>
     <string name="subject_specific">Specific Subject</string>
@@ -92,4 +97,5 @@
     <string name="sched_sample">01/02/2021 2PM-4PM</string>
     <string name="fee_sample">P500</string>
     <string name="google_sign_in">Google Sign In</string>
+
 </resources>

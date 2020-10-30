@@ -77,7 +77,6 @@ public class TutorSubjectsFragment extends Fragment {
     }
 
     public class TutorSubjectCardViewHolder extends RecyclerView.ViewHolder{
-        public LinearLayout root;
         public TextView name, description, weekly_sched, time, fee;
         public TutorSubjectCardViewHolder(View itemView) {
             super(itemView);

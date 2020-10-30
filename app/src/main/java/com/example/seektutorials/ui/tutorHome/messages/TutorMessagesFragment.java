@@ -1,4 +1,4 @@
-package com.example.seektutorials.ui.tutorHome;
+package com.example.seektutorials.ui.tutorHome.messages;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

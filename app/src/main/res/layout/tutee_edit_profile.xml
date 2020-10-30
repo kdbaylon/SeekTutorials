@@ -13,8 +13,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.tutorHome.TuteeProfileFragment">
-
+        tools:context=".ui.tuteeHome.profile.TuteeProfileFragment">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
@@ -26,25 +25,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <ImageButton
+                    android:background="@null"
+                    android:tint="@color/colorPrimaryDark"
+                    android:id="@+id/back"
+                    android:layout_width="65dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="backButton"
+                    android:contentDescription="@string/app_name"
+                    android:minHeight="?actionBarSize"
+                    app:srcCompat="@drawable/round_arrow_back_24" />
 
                 <TextView
+                    android:layout_marginEnd="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="0dp"
-                    android:text="@string/profile"
+                    android:text="@string/edit_profile"
                     android:textAllCaps="false"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="43sp" />
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/topAppBar"
-                    style="@style/Widget.SeekTutorials.Toolbar"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/registerButton"
+                    style="@style/Widget.SeekTutorials.Button.TextButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:tint="@color/colorPrimaryDark"
-                    app:menu="@menu/logout_bar" />
+                    android:layout_gravity="end"
+                    android:text="@string/submit" />
             </LinearLayout>
 
 
@@ -62,6 +71,24 @@
             app:civ_border_width="2dp"
             app:civ_border_color="#000000"/>
 
+        <ImageButton
+            android:id="@+id/imageButton"
+            style="@style/Widget.SeekTutorials.ImageButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/photo"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="@+id/profilepic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.632"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/round_camera_alt_24" />
+
         <LinearLayout
             android:id="@+id/name"
             android:layout_width="match_parent"
@@ -69,11 +96,14 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             app:layout_constraintTop_toBottomOf="@+id/profilepic">
-            <TextView
+            <EditText
                 android:id="@+id/fname"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:autofillHints="@string/first_name"
+                android:inputType="text"
+                android:hint="@string/first_name"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -83,14 +113,16 @@
                 android:text="@string/space"
                 android:textAppearance="?attr/textAppearanceHeadline6"  />
 
-            <TextView
+            <EditText
                 android:id="@+id/lname"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:autofillHints="@string/last_name"
+                android:hint="@string/last_name"
+                android:inputType="text"
                 android:textAppearance="?attr/textAppearanceHeadline6"  />
         </LinearLayout>
-
         <TextView
             android:id="@+id/about"
             android:layout_width="match_parent"
@@ -127,12 +159,15 @@
                         android:text="@string/location"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="@color/textColorPrimary" />
-                    <TextView
+                    <EditText
                         android:id="@+id/loc"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:textColor="@color/textColorPrimary"
+                        android:autofillHints="@string/location"
+                        android:hint="@string/location"
+                        android:inputType="text"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"/>
                     <TextView
@@ -141,29 +176,37 @@
                         android:text="@string/degprog"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="@color/textColorPrimary" />
-                    <TextView
+                    <EditText
                         android:id="@+id/course"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:textColor="@color/textColorPrimary"
+                        android:inputType="text"
                         android:paddingStart="10dp"
-                        android:paddingEnd="10dp"/>
+                        android:paddingEnd="10dp"
+                        android:hint="@string/course"
+                        android:autofillHints="@string/course"
+                        />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/prompt_email"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="@color/textColorPrimary" />
-                    <TextView
+                    <EditText
                         android:id="@+id/email"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:textColor="@color/textColorPrimary"
                         android:paddingStart="10dp"
-                        android:paddingEnd="10dp"/>
+                        android:paddingEnd="10dp"
+                        android:hint="@string/prompt_email"
+                        android:autofillHints="@string/prompt_email"
+                        android:inputType="textEmailAddress"/>
                 </LinearLayout>
+
 
 
         </com.google.android.material.card.MaterialCardView>

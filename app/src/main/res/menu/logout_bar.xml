@@ -4,6 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <item
+        android:id="@+id/editProfile"
+        android:icon="@drawable/round_edit_24"
+        android:title="@string/edit"
+        android:onClick="editProfile"
+        app:showAsAction="ifRoom"
+        />
+    <item
         android:id="@+id/logout"
         android:icon="@drawable/round_exit_to_app_24"
         android:title="@string/logout"

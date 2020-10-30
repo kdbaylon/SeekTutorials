@@ -1,5 +1,6 @@
 package com.example.seektutorials.ui.tuteeHome.search;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +15,21 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.tutorHome.subjects.Subject;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Tutee search fragment
@@ -51,6 +58,9 @@ public class TuteeSearchFragment extends Fragment {
                 holder.setWeekly_sched(model.getWeekly_sched());
                 holder.setTime(model.getTime());
                 holder.setFee(model.getFee());
+                holder.setTutorFname(model.getTutorFname());
+                holder.setTutorLname(model.getTutorLname());
+                holder.setProfilepic(model.getTutorUID());
             }
 
             @Override
@@ -73,7 +83,8 @@ public class TuteeSearchFragment extends Fragment {
         return view;
     }
     public class TuteeSubjectCardViewHolder extends RecyclerView.ViewHolder{
-        public TextView name, description, weekly_sched, time, fee;
+        public TextView name, description, weekly_sched, time, fee, tutorFname, tutorLname;
+        public CircleImageView profilepic;
         public TuteeSubjectCardViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
@@ -81,6 +92,9 @@ public class TuteeSearchFragment extends Fragment {
             weekly_sched = itemView.findViewById(R.id.weekly_sched);
             time = itemView.findViewById(R.id.time);
             fee = itemView.findViewById(R.id.fee);
+            tutorFname = itemView.findViewById(R.id.fname);
+            tutorLname = itemView.findViewById(R.id.lname);
+            profilepic = itemView.findViewById(R.id.profilepic);
         }
         public void setName(String string) {
             name.setText(string);
@@ -94,8 +108,20 @@ public class TuteeSearchFragment extends Fragment {
         public void setTime(String string) {
             time.setText(string);
         }
-        public void setFee(String string) {
-            fee.setText(string);
+        public void setFee(String string) { fee.setText(string); }
+        public void setTutorFname(String string) { tutorFname.setText(string);}
+        public void setTutorLname(String string) { tutorLname.setText(string);}
+        public void setProfilepic(String string) {
+            // get the Firebase  storage reference
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/"+string);
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri){
+                    //load img using glide
+                    Glide.with(getActivity()).load(uri.toString()).placeholder(R.drawable.round_account_circle_24).dontAnimate().into(profilepic);
+                }
+            });
+            Glide.with(getActivity()).load(string).placeholder(R.drawable.round_account_circle_24).dontAnimate().into(profilepic);
         }
     }
 
