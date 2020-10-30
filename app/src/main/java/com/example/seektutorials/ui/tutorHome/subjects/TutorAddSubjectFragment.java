@@ -120,75 +120,53 @@ public class TutorAddSubjectFragment extends DialogFragment {
             Toast.makeText(getActivity(), "Enter weekly schedule!", Toast.LENGTH_SHORT).show();
             return;
         }
-        //get tutor fname and lname
-        DocumentReference docRef = db.collection("users").document(uid);
-        //get info from firestore document
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null && document.exists()) {
-                        //get text
-                        final String tutorFname =document.getString("fname");
-                        final String tutorLname =document.getString("lname");
-                        //map to a hashmap
-                        final Map<String, Object> subject =new HashMap<>();
-                        subject.put("name",name);
-                        subject.put("description",description);
-                        subject.put("fee",fee +" per hour");
-                        subject.put("time",time);
-                        subject.put("weekly_sched",weekly_sched);
-                        subject.put("tutorUID",tutorUID);
-                        subject.put("tutorFname",tutorFname);
-                        subject.put("tutorLname",tutorLname);
-                        //add to subject collection
-                        String subjUUID=UUID.randomUUID().toString();
-                        db.collection("subjects").document(subjUUID)
-                                .set(subject)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity(), "Document written failed.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                        //add to user-subjects
-                        //map to a hashmap
-                        final Map<String, Object> subject0 =new HashMap<>();
-                        subject0.put("name",name);
-                        subject0.put("description",description);
-                        subject0.put("fee",fee +" per hour");
-                        subject0.put("time",time);
-                        subject0.put("weekly_sched",weekly_sched);
-                        db.collection("users").document(uid).collection("subjects").document(subjUUID)
-                                .set(subject0)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity(), "Document written failed.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                        getChildFragmentManager().popBackStackImmediate();
-                    } else {
-                        Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+        //map to a hashmap
+        final Map<String, Object> subject =new HashMap<>();
+        subject.put("name",name);
+        subject.put("description",description);
+        subject.put("fee",fee +" per hour");
+        subject.put("time",time);
+        subject.put("weekly_sched",weekly_sched);
+        subject.put("tutorUID",tutorUID);
+        //add to subject collection
+        String subjUUID=UUID.randomUUID().toString();
+        db.collection("subjects").document(subjUUID)
+                .set(subject)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Document written failed.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        //add to user-subjects
+        //map to a hashmap
+        final Map<String, Object> subject0 =new HashMap<>();
+        subject0.put("name",name);
+        subject0.put("description",description);
+        subject0.put("fee",fee +" per hour");
+        subject0.put("time",time);
+        subject0.put("weekly_sched",weekly_sched);
+        db.collection("users").document(uid).collection("subjects").document(subjUUID)
+                .set(subject0)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Document written failed.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        getChildFragmentManager().popBackStackImmediate();
 
 
 

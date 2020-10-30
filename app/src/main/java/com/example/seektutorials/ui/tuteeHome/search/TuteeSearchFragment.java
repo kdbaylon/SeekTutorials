@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -21,8 +22,12 @@ import com.example.seektutorials.ui.tutorHome.subjects.Subject;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -58,8 +63,8 @@ public class TuteeSearchFragment extends Fragment {
                 holder.setWeekly_sched(model.getWeekly_sched());
                 holder.setTime(model.getTime());
                 holder.setFee(model.getFee());
-                holder.setTutorFname(model.getTutorFname());
-                holder.setTutorLname(model.getTutorLname());
+                holder.setTutorFname(model.getTutorUID());
+                holder.setTutorLname(model.getTutorUID());
                 holder.setProfilepic(model.getTutorUID());
             }
 
@@ -109,8 +114,44 @@ public class TuteeSearchFragment extends Fragment {
             time.setText(string);
         }
         public void setFee(String string) { fee.setText(string); }
-        public void setTutorFname(String string) { tutorFname.setText(string);}
-        public void setTutorLname(String string) { tutorLname.setText(string);}
+        public void setTutorFname(String string) {
+            DocumentReference reference = db.collection("users").document(string);
+            reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null && document.exists()){
+                            //get text
+                            String fname = document.getString("fname");
+                            tutorFname.setText(fname);
+                        } else {
+                            Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+        public void setTutorLname(String string) { DocumentReference reference = db.collection("users").document(string);
+            reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null && document.exists()){
+                            //get text
+                            String lname = document.getString("lname");
+                            tutorLname.setText(lname);
+                        }else {
+                            Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });}
         public void setProfilepic(String string) {
             // get the Firebase  storage reference
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/"+string);

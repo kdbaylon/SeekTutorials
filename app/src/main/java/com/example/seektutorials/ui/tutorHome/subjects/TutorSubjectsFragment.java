@@ -37,7 +37,6 @@ public class TutorSubjectsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tutor_subjects, null);
-        //addButton = view.findViewById(R.id.addButton);
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
@@ -74,12 +73,7 @@ public class TutorSubjectsFragment extends Fragment {
     //Final step, where "mRecyclerView" is defined in your xml layout as
     //the recyclerview
         mRecyclerView.setAdapter(adapter);
-//        addButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                addSubject();
-//            }
-//        });
+
         return view;
 
 

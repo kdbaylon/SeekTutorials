@@ -71,6 +71,7 @@ public class EditTuteeProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        filePath = null;
         final View view = inflater.inflate(R.layout.tutee_edit_profile, null);
         //get layout addresses
         final ImageButton backButton = view.findViewById(R.id.back);
@@ -87,8 +88,8 @@ public class EditTuteeProfileFragment extends Fragment {
         uid=mAuth.getCurrentUser().getUid();
         // get the Firebase  storage reference
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference().child("images/"+uid);
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference = storage.getReference();
+        storageReference.child("images/"+uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri){
                 //load img using glide
@@ -171,8 +172,8 @@ public class EditTuteeProfileFragment extends Fragment {
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Uploading");
             progressDialog.show();
-
-            StorageReference ref = storageReference.child( "images/" + uid);
+            String id= mAuth.getUid().toString();
+            StorageReference ref = storageReference.child("images/"+ uid);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -217,9 +218,6 @@ public class EditTuteeProfileFragment extends Fragment {
     public void editProfile(View view){
         //upload image to storage
         uploadImage();
-        //get profile picture uid
-        StorageReference ref = storageReference.child( "images/" + uid);
-        String profilePicUri =ref.getDownloadUrl().toString();
         // Take the values
         final String fname, lname, email, school, course, location, desc;
         fname = fnameEditText.getText().toString();
@@ -257,7 +255,6 @@ public class EditTuteeProfileFragment extends Fragment {
         user.put("email", email);
         user.put("course", course);
         user.put("location", location);
-        user.put("profilePictureUrl",profilePicUri);
         //Update
         uid=mAuth.getCurrentUser().getUid();
         db.collection("users").document(uid)
