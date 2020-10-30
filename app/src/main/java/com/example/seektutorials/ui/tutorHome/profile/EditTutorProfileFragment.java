@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
 import com.example.seektutorials.TutorHome;
 import com.example.seektutorials.ui.login.LoginActivity;
@@ -60,7 +61,6 @@ public class EditTutorProfileFragment extends Fragment {
     //Firebase
     //storage
     private StorageReference storageReference;
-    private FirebaseStorage storage;
     //auth
     private FirebaseAuth mAuth;
     //firestore
@@ -80,7 +80,6 @@ public class EditTutorProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tutor_edit_profile, null);
         //get layout addresses
-        final ImageButton backButton = view.findViewById(R.id.back);
         final Button register = view.findViewById(R.id.registerButton);
         imageView = view.findViewById(R.id.profilepic);
         final ImageButton imageButton = view.findViewById(R.id.imageButton);
@@ -95,8 +94,15 @@ public class EditTutorProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         uid=mAuth.getCurrentUser().getUid();
         // get the Firebase  storage reference
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference().child("images/"+uid);
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri){
+                //load img using glide
+                Glide.with(getActivity()).load(uri.toString()).placeholder(R.drawable.round_account_circle_24).dontAnimate().into(imageView);
+            }
+        });
         DocumentReference docRef = db.collection("users").document(uid);
         //get info from firestore document
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -220,6 +226,7 @@ public class EditTutorProfileFragment extends Fragment {
         }
 
     }
+
     public void editProfile(View view){
         //upload image to storage
         uploadImage();

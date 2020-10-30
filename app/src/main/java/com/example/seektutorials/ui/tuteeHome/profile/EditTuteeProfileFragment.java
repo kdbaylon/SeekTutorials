@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -86,7 +87,14 @@ public class EditTuteeProfileFragment extends Fragment {
         uid=mAuth.getCurrentUser().getUid();
         // get the Firebase  storage reference
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        storageReference = storage.getReference().child("images/"+uid);
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri){
+                //load img using glide
+                Glide.with(getActivity()).load(uri.toString()).placeholder(R.drawable.round_account_circle_24).dontAnimate().into(imageView);
+            }
+        });
         DocumentReference docRef = db.collection("users").document(uid);
         //get info from firestore document
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

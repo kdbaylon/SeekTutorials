@@ -13,6 +13,7 @@ import com.example.seektutorials.ui.tutorHome.profile.EditTutorProfileFragment;
 import com.example.seektutorials.ui.tutorHome.profile.TutorProfileFragment;
 import com.example.seektutorials.ui.tutorHome.bookings.TutorBookingsFragment;
 import com.example.seektutorials.ui.tutorHome.reviews.TutorReviewsFragment;
+import com.example.seektutorials.ui.tutorHome.subjects.TutorAddSubjectFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,5 +87,5 @@ public class TutorHome extends AppCompatActivity {
         this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
         this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
     }
-
+    public void addSubject(View view) { openFragment(new TutorAddSubjectFragment());}
 }

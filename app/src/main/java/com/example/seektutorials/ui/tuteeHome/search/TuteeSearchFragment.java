@@ -121,7 +121,7 @@ public class TuteeSearchFragment extends Fragment {
                     Glide.with(getActivity()).load(uri.toString()).placeholder(R.drawable.round_account_circle_24).dontAnimate().into(profilepic);
                 }
             });
-            Glide.with(getActivity()).load(string).placeholder(R.drawable.round_account_circle_24).dontAnimate().into(profilepic);
+
         }
     }
 

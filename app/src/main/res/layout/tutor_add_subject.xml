@@ -32,6 +32,7 @@
                     android:id="@+id/back"
                     android:layout_width="73dp"
                     android:layout_height="wrap_content"
+                    android:onClick="backButton"
                     android:contentDescription="@string/app_name"
                     android:minHeight="?actionBarSize"
                     app:srcCompat="@drawable/round_arrow_back_24" />
@@ -49,36 +50,66 @@
                 <Button
                     android:id="@+id/addButton"
                     style="@style/Widget.SeekTutorials.Button.TextButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="76dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:text="@string/add" />
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
             android:id="@+id/subj_layout"
             style="@style/Widget.SeekTutorials.TextInputLayout"
-            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="17dp"
+            android:hint="@string/select_subject"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar" />
+        <AutoCompleteTextView
+            android:id="@+id/select_subj"
+            android:hint="@string/subject_specific"
+            android:gravity="center_vertical"
+            android:layout_width="100dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintBottom_toTopOf="@+id/desc_short"
+            app:layout_constraintHorizontal_bias="0.418"
+            app:layout_constraintStart_toEndOf="@id/subj_layout"
+            app:layout_constraintTop_toBottomOf="@id/appbar"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/subj_number_layout"
+            style="@style/Widget.SeekTutorials.TextInputLayout"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="4dp"
-            android:hint="@string/select_subject"
-            app:layout_constraintTop_toBottomOf="@+id/appbar"
-            tools:layout_editor_absoluteX="4dp">
+            android:hint="@string/subj_no"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/select_subj"
+            app:layout_constraintTop_toBottomOf="@+id/appbar">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/subj"
+                android:id="@+id/subj_no"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:inputType="textLongMessage"
+                android:inputType="number"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/desc_short"
             style="@style/Widget.SeekTutorials.TextInputLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="4dp"
             android:hint="@string/subject_desc"
@@ -88,7 +119,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/subj_desc"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:inputType="textLongMessage"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -146,6 +177,8 @@
                 android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
