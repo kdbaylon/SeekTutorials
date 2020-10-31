@@ -15,6 +15,7 @@ import com.example.seektutorials.ui.tutorHome.profile.TutorProfileFragment;
 import com.example.seektutorials.ui.tutorHome.bookings.TutorBookingsFragment;
 import com.example.seektutorials.ui.tutorHome.reviews.TutorReviewsFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorAddSubjectFragment;
+import com.example.seektutorials.ui.tutorHome.subjects.TutorEditSubjectFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

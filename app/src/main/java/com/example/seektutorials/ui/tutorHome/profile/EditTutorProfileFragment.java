@@ -201,7 +201,6 @@ public class EditTutorProfileFragment extends Fragment {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            //if the upload is not successfull
                             //hiding the progress dialog
                             progressDialog.dismiss();
 

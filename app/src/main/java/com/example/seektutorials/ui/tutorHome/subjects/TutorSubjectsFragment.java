@@ -1,5 +1,7 @@
 package com.example.seektutorials.ui.tutorHome.subjects;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,19 +65,34 @@ public class TutorSubjectsFragment extends Fragment {
                 holder.setTime(model.getTime());
                 holder.setFee(model.getFee());
                 final String subjUUID = model.getSubjUUID().toString();
+
+                //add the data to a bundle to be accessed by other fragments
+                //Toast.makeText(getActivity(), a, Toast.LENGTH_SHORT).show();
+                holder.editButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Bundle result = new Bundle();
+                        //result.putString("bundleKey", subjUUID);
+                        //getParentFragmentManager().setFragmentResult("requestKey", result);
+                        Fragment nextFrag= TutorEditSubjectFragment.newInstance(subjUUID);
+                        //nextFrag.setArguments(result);
+                        getActivity().getSupportFragmentManager()
+                                 .beginTransaction()
+                                .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                });
                 holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MaterialAlertDialogBuilder dialog =new MaterialAlertDialogBuilder(getActivity());
+                        MaterialAlertDialogBuilder dialog =new MaterialAlertDialogBuilder(getActivity(),R.style.AlertDialogTheme);
                         dialog.setTitle(R.string.delete)
                                 .setMessage(R.string.delete_subject)
                                 .setCancelable(false)
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        //get subjUUID for deleting
-
                                         uid=mAuth.getCurrentUser().getUid();
-
                                         db.collection("users").document(uid).collection("subjects").document(subjUUID)
                                                 .delete()
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -113,11 +131,9 @@ public class TutorSubjectsFragment extends Fragment {
                                         dialog.cancel();
                                     }
                                 });
-
                         dialog.show();
                     }
                 });
-
             }
 
             @Override
@@ -177,6 +193,5 @@ public class TutorSubjectsFragment extends Fragment {
         }
 
     }
-
 
 }
