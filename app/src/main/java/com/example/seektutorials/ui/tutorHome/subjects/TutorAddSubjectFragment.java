@@ -1,5 +1,6 @@
 package com.example.seektutorials.ui.tutorHome.subjects;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.seektutorials.R;
+import com.example.seektutorials.TutorHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -85,6 +87,7 @@ public class TutorAddSubjectFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 addSubject();
+
             }
         });
 
@@ -152,12 +155,16 @@ public class TutorAddSubjectFragment extends DialogFragment {
         subject0.put("fee",fee +" per hour");
         subject0.put("time",time);
         subject0.put("weekly_sched",weekly_sched);
+        subject0.put("subjUUID",subjUUID);
         db.collection("users").document(uid).collection("subjects").document(subjUUID)
                 .set(subject0)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
+                        Activity act=getActivity();
+                        ((TutorHome)act).onBackPressed();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -166,9 +173,6 @@ public class TutorAddSubjectFragment extends DialogFragment {
                         Toast.makeText(getActivity(), "Document written failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
-        getChildFragmentManager().popBackStackImmediate();
-
-
 
     }
 

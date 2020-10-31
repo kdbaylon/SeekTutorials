@@ -1,9 +1,11 @@
 package com.example.seektutorials.ui.tutorHome.subjects;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,12 +20,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.seektutorials.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
 
 /**
  * Tutor subjects fragment
@@ -43,17 +50,74 @@ public class TutorSubjectsFragment extends Fragment {
         uid=mAuth.getCurrentUser().getUid();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        Query query = db.collection("users").document(uid).collection("subjects").limit(10);
+        Query query = db.collection("users").document(uid).collection("subjects");
         FirestoreRecyclerOptions<Subject> options = new FirestoreRecyclerOptions.Builder<Subject>().setQuery(query, Subject.class).build();
 
         final FirestoreRecyclerAdapter<Subject, TutorSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subject, TutorSubjectCardViewHolder>(options) {
             @Override
-            public void onBindViewHolder(TutorSubjectCardViewHolder holder, int position, Subject model) {
+            public void onBindViewHolder(TutorSubjectCardViewHolder holder, int position, final Subject model) {
                 holder.setName(model.getName());
                 holder.setDescription(model.getDescription());
                 holder.setWeekly_sched(model.getWeekly_sched());
                 holder.setTime(model.getTime());
                 holder.setFee(model.getFee());
+                final String subjUUID = model.getSubjUUID().toString();
+                holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MaterialAlertDialogBuilder dialog =new MaterialAlertDialogBuilder(getActivity());
+                        dialog.setTitle(R.string.delete)
+                                .setMessage(R.string.delete_subject)
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //get subjUUID for deleting
+
+                                        uid=mAuth.getCurrentUser().getUid();
+
+                                        db.collection("users").document(uid).collection("subjects").document(subjUUID)
+                                                .delete()
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        db.collection("subjects").document(subjUUID)
+                                                                .delete()
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        Toast.makeText(getActivity(),"Subject deleted",
+                                                                                Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Toast.makeText(getActivity(),"Failure on deleting subject",
+                                                                                Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(getActivity(),"Failure on deleting subject",
+                                                                Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //  Action for 'NO' Button
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        dialog.show();
+                    }
+                });
+
             }
 
             @Override
@@ -66,6 +130,7 @@ public class TutorSubjectsFragment extends Fragment {
             public void onError(FirebaseFirestoreException e) {
                 Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
             }
+
 
         };
         //make adapter listen so it updates
@@ -81,13 +146,19 @@ public class TutorSubjectsFragment extends Fragment {
 
     public class TutorSubjectCardViewHolder extends RecyclerView.ViewHolder{
         public TextView name, description, weekly_sched, time, fee;
+        public Button editButton, deleteButton;
         public TutorSubjectCardViewHolder(View itemView) {
             super(itemView);
+
             name = itemView.findViewById(R.id.name);
             description = itemView.findViewById(R.id.description);
             weekly_sched = itemView.findViewById(R.id.wk_sched);
             time = itemView.findViewById(R.id.time);
             fee = itemView.findViewById(R.id.fee);
+            editButton = itemView.findViewById(R.id.editButton);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
+
+
         }
         public void setName(String string) {
             name.setText(string);
@@ -104,6 +175,7 @@ public class TutorSubjectsFragment extends Fragment {
         public void setFee(String string) {
             fee.setText(string);
         }
+
     }
 
 

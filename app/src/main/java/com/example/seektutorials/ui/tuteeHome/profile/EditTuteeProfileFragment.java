@@ -1,5 +1,6 @@
 package com.example.seektutorials.ui.tuteeHome.profile;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
+import com.example.seektutorials.TuteeHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -263,6 +265,8 @@ public class EditTuteeProfileFragment extends Fragment {
              @Override
              public void onSuccess(Void aVoid) {
                Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
+                 Activity act=getActivity();
+                 ((TuteeHome)act).onBackPressed();
              }
            })
            .addOnFailureListener(new OnFailureListener() {

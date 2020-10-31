@@ -1,5 +1,6 @@
 package com.example.seektutorials.ui.tutorHome.profile;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -147,8 +148,6 @@ public class EditTutorProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 editProfile(v);
-                v.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-                v.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
             }
         });
 
@@ -287,6 +286,8 @@ public class EditTutorProfileFragment extends Fragment {
              @Override
              public void onSuccess(Void aVoid) {
                Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
+                 Activity act=getActivity();
+                 ((TutorHome)act).onBackPressed();
              }
            })
            .addOnFailureListener(new OnFailureListener() {

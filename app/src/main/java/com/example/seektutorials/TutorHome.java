@@ -1,5 +1,6 @@
 package com.example.seektutorials;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,7 +17,11 @@ import com.example.seektutorials.ui.tutorHome.reviews.TutorReviewsFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorAddSubjectFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import androidx.annotation.NonNull;
@@ -31,6 +36,7 @@ import java.util.List;
 public class TutorHome extends AppCompatActivity {
     String uid;
     private FirebaseAuth mAuth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,4 +94,5 @@ public class TutorHome extends AppCompatActivity {
         this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
     }
     public void addSubject(View view) { openFragment(new TutorAddSubjectFragment());}
+
 }
