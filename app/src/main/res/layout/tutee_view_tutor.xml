@@ -26,25 +26,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <ImageButton
-                android:background="@null"
-                android:tint="@color/colorPrimaryDark"
                 android:id="@+id/back"
                 android:layout_width="73dp"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:contentDescription="@string/app_name"
                 android:minHeight="?actionBarSize"
+                android:onClick="backButton"
+                android:tint="@color/colorPrimaryDark"
                 app:srcCompat="@drawable/round_arrow_back_24" />
+
             <TextView
-                android:layout_width="250dp"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="6dp"
-                android:textStyle="bold"
                 android:text="@string/view_tutor_profile"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/addButton"
                 style="@style/Widget.SeekTutorials.Button.TextButton"
@@ -73,6 +77,7 @@
         android:gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@+id/profilepic">
         <TextView
+            android:id="@+id/fname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -87,6 +92,7 @@
             android:textAppearance="?attr/textAppearanceHeadline6"  />
 
         <TextView
+            android:id="@+id/lname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -143,6 +149,7 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="@+id/card">
             <TextView
+                android:id="@+id/desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/description"
@@ -155,6 +162,7 @@
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/textColorPrimary" />
             <TextView
+                android:id="@+id/loc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loc_sample"
@@ -169,9 +177,17 @@
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/textColorPrimary" />
             <TextView
+                android:id="@+id/school"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/schoolsample"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/textColorPrimary"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"/>
+            <TextView
+                android:id="@+id/course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/textColorPrimary"
                 android:paddingStart="10dp"
@@ -183,6 +199,7 @@
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/textColorPrimary" />
             <TextView
+                android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/email"
@@ -207,56 +224,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card" />
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/subjects_card"
-        android:layout_width="385dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subjects">
-
-        <LinearLayout
-            android:layout_width="315dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical">
-
-            <!-- Title, secondary and supporting text -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/subject_specific"
-                android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceHeadline5" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/subject_desc"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/sched"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/fee"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/subjects"/>
     <TextView
         android:id="@+id/reviews"
         android:layout_width="match_parent"
@@ -271,92 +244,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subjects_card" />
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card3"
-        android:layout_width="385dp"
-        android:layout_height="153dp"
-        android:layout_margin="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reviews">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reviews_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/reviews"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- Media -->
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:contentDescription="@string/tutee_tab"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/round_person_24" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <!-- Title, secondary and supporting text -->
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_gravity="start"
-                    android:numStars="5"
-                    android:padding="0dp"
-                    android:progressTint="@color/colorPrimaryDark"
-                    android:rating="4.5"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/subject_specific"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/first_name"
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/space"
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/last_name"
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/rating_comment"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorPrimary" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

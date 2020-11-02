@@ -92,7 +92,6 @@ public class TutorEditSubjectFragment extends DialogFragment {
         Bundle bundle = getArguments();
         if(bundle!=null){
             subjUUID = bundle.getString("subjUUID");
-            Toast.makeText(getActivity(), subjUUID, Toast.LENGTH_SHORT).show();
         }
         DocumentReference ref =db.collection("subjects").document(subjUUID);
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -1,5 +1,6 @@
 package com.example.seektutorials.ui.tutorHome.reviews;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.tutorHome.subjects.Subject;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,6 +32,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Tutor reviews fragment
@@ -84,6 +91,7 @@ public class TutorReviewsFragment extends Fragment {
                 holder.setComment(model.getComment());
                 holder.setSubject(model.getSubject());
                 holder.setRate(model.getRate());
+                holder.setProfilepic(model.getTuteeUID());
             }
 
             @Override
@@ -105,7 +113,7 @@ public class TutorReviewsFragment extends Fragment {
         return view;
     }
     public class TutorReviewCardViewHolder extends RecyclerView.ViewHolder{
-        public LinearLayout root;
+        public CircleImageView profilepic;
         public TextView fname, lname, comment, subject;
         public RatingBar ratingBar;
         public TutorReviewCardViewHolder(View itemView) {
@@ -115,6 +123,7 @@ public class TutorReviewsFragment extends Fragment {
             comment = itemView.findViewById(R.id.comment);
             subject = itemView.findViewById(R.id.subject);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+            profilepic = itemView.findViewById(R.id.profilepic);
 
         }
         public void setFname(String string) {
@@ -125,6 +134,18 @@ public class TutorReviewsFragment extends Fragment {
         public void setSubject(String string) { subject.setText(string); }
         public void setRate(Float f) {
             ratingBar.setRating(f);
+        }
+        public void setProfilepic(String string) {
+            // get the Firebase  storage reference
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/"+string);
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri){
+                    //load img using glide
+                    Glide.with(getActivity()).load(uri.toString()).placeholder(R.drawable.round_account_circle_24).dontAnimate().into(profilepic);
+                }
+            });
+
         }
     }
 

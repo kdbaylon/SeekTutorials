@@ -55,7 +55,6 @@ public class TutorSubjectsFragment extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         Query query = db.collection("users").document(uid).collection("subjects");
         FirestoreRecyclerOptions<Subject> options = new FirestoreRecyclerOptions.Builder<Subject>().setQuery(query, Subject.class).build();
-
         final FirestoreRecyclerAdapter<Subject, TutorSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subject, TutorSubjectCardViewHolder>(options) {
             @Override
             public void onBindViewHolder(TutorSubjectCardViewHolder holder, int position, final Subject model) {
@@ -67,15 +66,10 @@ public class TutorSubjectsFragment extends Fragment {
                 final String subjUUID = model.getSubjUUID().toString();
 
                 //add the data to a bundle to be accessed by other fragments
-                //Toast.makeText(getActivity(), a, Toast.LENGTH_SHORT).show();
                 holder.editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //Bundle result = new Bundle();
-                        //result.putString("bundleKey", subjUUID);
-                        //getParentFragmentManager().setFragmentResult("requestKey", result);
                         Fragment nextFrag= TutorEditSubjectFragment.newInstance(subjUUID);
-                        //nextFrag.setArguments(result);
                         getActivity().getSupportFragmentManager()
                                  .beginTransaction()
                                 .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
@@ -165,7 +159,6 @@ public class TutorSubjectsFragment extends Fragment {
         public Button editButton, deleteButton;
         public TutorSubjectCardViewHolder(View itemView) {
             super(itemView);
-
             name = itemView.findViewById(R.id.name);
             description = itemView.findViewById(R.id.description);
             weekly_sched = itemView.findViewById(R.id.wk_sched);
@@ -173,8 +166,6 @@ public class TutorSubjectsFragment extends Fragment {
             fee = itemView.findViewById(R.id.fee);
             editButton = itemView.findViewById(R.id.editButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
-
-
         }
         public void setName(String string) {
             name.setText(string);

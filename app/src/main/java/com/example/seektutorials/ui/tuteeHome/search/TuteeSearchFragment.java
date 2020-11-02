@@ -3,26 +3,37 @@ package com.example.seektutorials.ui.tuteeHome.search;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.algolia.search.saas.Client;
+import com.algolia.search.saas.Index;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.Model;
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.tutorHome.subjects.Subject;
+import com.example.seektutorials.ui.tutorHome.subjects.TutorEditSubjectFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +42,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -46,6 +58,10 @@ public class TuteeSearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        Client client = new Client("0GFQ4WANR0", "95103181e72e463ceac084cb275db1c5");
+//        Index index = client.getIndex("subjects");
+
+        setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.tutee_search, null);
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         // taking FirebaseAuth instance
@@ -53,7 +69,8 @@ public class TuteeSearchFragment extends Fragment {
         uid=mAuth.getCurrentUser().getUid();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        Query query = db.collection("subjects").limit(10);
+        Query query = db.collection("subjects").limit(10).orderBy("name");
+        //show subjects
         FirestoreRecyclerOptions<Subjectt> options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
         final FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
             @Override
@@ -66,6 +83,18 @@ public class TuteeSearchFragment extends Fragment {
                 holder.setTutorFname(model.getTutorUID());
                 holder.setTutorLname(model.getTutorUID());
                 holder.setProfilepic(model.getTutorUID());
+                final String tutorUID=model.getTutorUID().toString();
+                holder.view_tutor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Fragment nextFrag= ViewTutorProfileFragment.newInstance(tutorUID);
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                });
             }
 
             @Override
@@ -89,6 +118,7 @@ public class TuteeSearchFragment extends Fragment {
     }
     public class TuteeSubjectCardViewHolder extends RecyclerView.ViewHolder{
         public TextView name, description, weekly_sched, time, fee, tutorFname, tutorLname;
+        public Button book, view_tutor, message;
         public CircleImageView profilepic;
         public TuteeSubjectCardViewHolder(View itemView) {
             super(itemView);
@@ -100,6 +130,9 @@ public class TuteeSearchFragment extends Fragment {
             tutorFname = itemView.findViewById(R.id.fname);
             tutorLname = itemView.findViewById(R.id.lname);
             profilepic = itemView.findViewById(R.id.profilepic);
+            book = itemView.findViewById(R.id.request);
+            view_tutor = itemView.findViewById(R.id.view_tutor);
+            message = itemView.findViewById(R.id.message);
         }
         public void setName(String string) {
             name.setText(string);
@@ -164,6 +197,45 @@ public class TuteeSearchFragment extends Fragment {
             });
 
         }
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.top_app_bar, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //called when search button is pressed
+                searchData(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                //called when typing
+                return false;
+            }
+        });
+    }
+    public void searchData(String s){
+        db.collection("subjects").whereEqualTo("subject",s.toLowerCase())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (DocumentSnapshot doc: task.getResult()){
+
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }

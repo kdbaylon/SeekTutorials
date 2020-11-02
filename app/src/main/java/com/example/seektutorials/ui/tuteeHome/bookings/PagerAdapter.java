@@ -1,4 +1,4 @@
-package com.example.seektutorials.ui.tuteeHome.Bookings;
+package com.example.seektutorials.ui.tuteeHome.bookings;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

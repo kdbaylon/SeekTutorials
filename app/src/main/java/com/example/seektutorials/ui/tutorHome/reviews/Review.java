@@ -1,16 +1,17 @@
 package com.example.seektutorials.ui.tutorHome.reviews;
 
 public class Review {
-    public String fname, lname, subject, comment;
+    public String fname, lname, subject, comment, tuteeUID;
             float rate;
     public Review(){}
 
-    public Review(String fname, String lname, String subject, String comment, int rate) {
+    public Review(String fname, String lname, String subject, String comment, int rate, String tuteeUID) {
         this.fname = fname;
         this.lname = lname;
         this.subject = subject;
         this.comment = comment;
         this.rate = rate;
+        this.tuteeUID = tuteeUID;
     }
 
     public String getFname() {
@@ -51,5 +52,13 @@ public class Review {
 
     public void setRate(float rate) {
         this.rate = rate;
+    }
+
+    public String getTuteeUID() {
+        return tuteeUID;
+    }
+
+    public void setTuteeUID(String tuteeUID) {
+        this.tuteeUID = tuteeUID;
     }
 }
