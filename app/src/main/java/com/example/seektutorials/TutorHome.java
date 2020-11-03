@@ -1,37 +1,28 @@
 package com.example.seektutorials;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.seektutorials.ui.login.LoginActivity;
-import com.example.seektutorials.ui.tutorHome.messages.TutorMessagesFragment;
+import com.example.seektutorials.ui.chat.MessagesFragment;
 import com.example.seektutorials.ui.tutorHome.profile.EditTutorProfileFragment;
 import com.example.seektutorials.ui.tutorHome.profile.TutorProfileFragment;
 import com.example.seektutorials.ui.tutorHome.bookings.TutorBookingsFragment;
 import com.example.seektutorials.ui.tutorHome.reviews.TutorReviewsFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorAddSubjectFragment;
-import com.example.seektutorials.ui.tutorHome.subjects.TutorEditSubjectFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.List;
 
 
 public class TutorHome extends AppCompatActivity {
@@ -65,7 +56,7 @@ public class TutorHome extends AppCompatActivity {
                         openFragment(new TutorBookingsFragment());
                         return true;
                     case R.id.messages_navigation:
-                        openFragment(new TutorMessagesFragment());
+                        openFragment(new MessagesFragment());
                         return true;
                 }
                 return false;

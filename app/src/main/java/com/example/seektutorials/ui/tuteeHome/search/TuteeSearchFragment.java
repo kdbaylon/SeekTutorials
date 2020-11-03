@@ -27,6 +27,7 @@ import com.algolia.search.saas.Index;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.Model;
 import com.example.seektutorials.R;
+import com.example.seektutorials.ui.chat.ChatRoomFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.Subject;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorEditSubjectFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
@@ -83,11 +84,22 @@ public class TuteeSearchFragment extends Fragment {
                 holder.setTutorFname(model.getTutorUID());
                 holder.setTutorLname(model.getTutorUID());
                 holder.setProfilepic(model.getTutorUID());
-                final String tutorUID=model.getTutorUID().toString();
+                final String tutorUID=model.getTutorUID();
                 holder.view_tutor.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Fragment nextFrag= ViewTutorProfileFragment.newInstance(tutorUID);
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                });
+                holder.message.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Fragment nextFrag= ChatRoomFragment.newInstance(tutorUID);
                         getActivity().getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
@@ -111,8 +123,7 @@ public class TuteeSearchFragment extends Fragment {
         };
         //make adapter listen so it updates
         adapter.startListening();
-        //Final step, where "mRecyclerView" is defined in your xml layout as
-        //the recyclerview
+
         mRecyclerView.setAdapter(adapter);
         return view;
     }

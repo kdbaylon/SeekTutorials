@@ -117,11 +117,14 @@
             tools:layout_editor_absoluteX="4dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:lines="5"
+                android:maxLines="10"
                 android:id="@+id/subj_desc"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textLongMessage"
-                android:maxLines="1" />
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:scrollbars="vertical"
+                android:gravity="top|start" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/days_avail_layout"

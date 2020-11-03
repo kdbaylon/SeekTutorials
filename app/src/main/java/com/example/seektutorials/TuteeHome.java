@@ -12,13 +12,12 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.seektutorials.ui.chat.MessagesFragment;
 import com.example.seektutorials.ui.login.LoginActivity;
-import com.example.seektutorials.ui.tuteeHome.TuteeMessagesFragment;
 import com.example.seektutorials.ui.tuteeHome.profile.EditTuteeProfileFragment;
 import com.example.seektutorials.ui.tuteeHome.profile.TuteeProfileFragment;
 import com.example.seektutorials.ui.tuteeHome.TuteeBookingsFragment;
 import com.example.seektutorials.ui.tuteeHome.search.TuteeSearchFragment;
-import com.example.seektutorials.ui.tutorHome.profile.EditTutorProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -44,7 +43,7 @@ public class TuteeHome extends AppCompatActivity{
                         openFragment(new TuteeBookingsFragment());
                         return true;
                     case R.id.messages_navigation:
-                        openFragment(new TuteeMessagesFragment());
+                        openFragment(new MessagesFragment());
                         return true;
                 }
                 return false;

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
+import com.example.seektutorials.ui.chat.ChatRoomFragment;
 import com.example.seektutorials.ui.tutorHome.reviews.Review;
 import com.example.seektutorials.ui.tutorHome.reviews.TutorReviewsFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.Subject;
@@ -68,6 +69,7 @@ public class ViewTutorProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tutee_view_tutor, null);
         //get layout addresses
+        Button messageButton = view.findViewById(R.id.messageButton);
         //profile info
         imageView = view.findViewById(R.id.profilepic);
         final TextView fnameTextView = view.findViewById(R.id.fname);
@@ -88,6 +90,18 @@ public class ViewTutorProfileFragment extends Fragment {
         if(bundle!=null){
             tutorUID = bundle.getString("tutorUID");
         }
+        //message button
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment nextFrag= ChatRoomFragment.newInstance(tutorUID);
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         // get the Firebase  storage reference
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference().child("images/"+tutorUID);
@@ -175,6 +189,7 @@ public class ViewTutorProfileFragment extends Fragment {
                 holder.setSubject(model.getSubject());
                 holder.setRate(model.getRate());
                 holder.setProfilepic(model.getTuteeUID());
+
             }
 
             @Override

@@ -176,7 +176,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/about"
                         android:autofillHints="@string/about"
-                        android:inputType="textLongMessage"
+                        android:inputType="textMultiLine"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="@color/textColorPrimary" />
                     <TextView
