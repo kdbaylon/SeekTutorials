@@ -2,12 +2,11 @@
 <resources>
     <color name="colorPrimary">#E0E0E0</color>
     <color name="colorPrimaryDark">#03989E</color>
-    <color name="colorAccent">#FEDBD0</color>
+    <color name="colorAccent">#03989E</color>
     <color name="textColorPrimary">#000000</color>
     <color name="textColorButton">#FFFFFF</color>
     <color name="toolbarIconColor">@color/textColorPrimary</color>
     <color name="loginPageBackgroundColor">#FFFFFF</color>
-    <color name="productGridBackgroundColor">#FFFFFF</color>
     <color name="textInputOutlineColor">#03989E</color>
 
 </resources>

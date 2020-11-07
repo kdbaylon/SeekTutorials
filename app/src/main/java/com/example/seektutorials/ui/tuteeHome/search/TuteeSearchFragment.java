@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.Model;
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.chat.ChatRoomFragment;
+import com.example.seektutorials.ui.tuteeHome.bookings.TuteeBookSessionFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.Subject;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorEditSubjectFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.TutorSubjectsFragment;
@@ -85,6 +86,18 @@ public class TuteeSearchFragment extends Fragment {
                 holder.setTutorLname(model.getTutorUID());
                 holder.setProfilepic(model.getTutorUID());
                 final String tutorUID=model.getTutorUID();
+                final String subjUUID=model.getSubjUUID();
+                holder.book.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Fragment nextFrag= TuteeBookSessionFragment.newInstance(subjUUID,tutorUID);
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                });
                 holder.view_tutor.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

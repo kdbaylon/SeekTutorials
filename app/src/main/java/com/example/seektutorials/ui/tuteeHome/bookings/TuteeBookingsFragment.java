@@ -1,4 +1,4 @@
-package com.example.seektutorials.ui.tuteeHome;
+package com.example.seektutorials.ui.tuteeHome.bookings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

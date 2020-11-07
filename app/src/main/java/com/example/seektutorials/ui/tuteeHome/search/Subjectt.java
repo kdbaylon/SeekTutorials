@@ -1,17 +1,17 @@
 package com.example.seektutorials.ui.tuteeHome.search;
 
 public class Subjectt {
-    public String name, description, weekly_sched, time, fee, subjectUUID, tutorUID;
+    public String name, description, weekly_sched, time, fee, subjUUID, tutorUID;
     public Subjectt(){}
 
-    public Subjectt(String name, String description, String weekly_sched, String time, String fee, String tutorUID, String subjectUUID) {
+    public Subjectt(String name, String description, String weekly_sched, String time, String fee, String tutorUID, String subjUUID) {
         this.name = name;
         this.description = description;
         this.weekly_sched = weekly_sched;
         this.time = time;
         this.fee = fee;
         this.tutorUID = tutorUID;
-        this.subjectUUID = subjectUUID;
+        this.subjUUID = subjUUID;
     }
 
     public String getName() {
@@ -58,7 +58,7 @@ public class Subjectt {
 
     public void setTutorUID(String tutorUID) { this.tutorUID = tutorUID; }
 
-    public String getSubjectUUID() { return subjectUUID; }
+    public String getSubjUUID() { return subjUUID; }
 
-    public void setSubjectUUID(String subjectUUID) { this.subjectUUID = subjectUUID; }
+    public void setSubjUUID(String subjUUID) { this.subjUUID = subjUUID; }
 }

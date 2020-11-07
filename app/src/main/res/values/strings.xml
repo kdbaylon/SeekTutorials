@@ -69,14 +69,17 @@
     <string name="view_tutor_profile">View Profile</string>
     <string name="message_tutor">Message</string>
     <string name="send_request">Book Session</string>
-    <string name="date">Enter date and time</string>
-    <string name="total_fee">Total Fee:</string>
     <string name="cancel">Cancel</string>
     <string name="subj_no">Subj. No.</string>
     <string name="days_avail">Days Available (ex. "MWF", "TTh")</string>
     <string name="time">Time (ex. "1PM-4PM","8AM-10AM")</string>
     <string name="fee">Hourly Fee (ex. "200php")</string>
     <string name="delete_subject">Delete Subject?</string>
+    <!--booking-->
+    <string name="enter_date">Enter date</string>
+    <string name="enter_time">Enter time</string>
+    <string name="total_fee">Generate Total Fee:</string>
+    <string name="decline_question">Decline Tutoring Session?</string>
     <!--Chat-->
     <string name="send">Send</string>
     <string name="enter_msg_here">Enter Message Here…</string>
@@ -96,7 +99,6 @@
     <string name="rating_comment">Good Job!</string>
     <string name="loc_sample">Taguig City</string>
     <string name="hello">Hello, ask ko lang po</string>
-    <string name="title_activity_tutee_requests">TuteeRequestsActivity</string>
     <string name="sched_sample">01/02/2021 2PM-4PM</string>
     <string name="fee_sample">P500</string>
     <string name="google_sign_in">Google Sign In</string>

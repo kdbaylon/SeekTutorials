@@ -16,7 +16,7 @@ import com.example.seektutorials.ui.chat.MessagesFragment;
 import com.example.seektutorials.ui.login.LoginActivity;
 import com.example.seektutorials.ui.tuteeHome.profile.EditTuteeProfileFragment;
 import com.example.seektutorials.ui.tuteeHome.profile.TuteeProfileFragment;
-import com.example.seektutorials.ui.tuteeHome.TuteeBookingsFragment;
+import com.example.seektutorials.ui.tuteeHome.bookings.TuteeBookingsFragment;
 import com.example.seektutorials.ui.tuteeHome.search.TuteeSearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;

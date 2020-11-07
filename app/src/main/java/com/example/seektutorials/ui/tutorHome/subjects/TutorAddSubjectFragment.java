@@ -123,6 +123,7 @@ public class TutorAddSubjectFragment extends DialogFragment {
             Toast.makeText(getActivity(), "Enter weekly schedule!", Toast.LENGTH_SHORT).show();
             return;
         }
+        String subjUUID=UUID.randomUUID().toString();
         //map to a hashmap
         final Map<String, Object> subject =new HashMap<>();
         subject.put("name",name);
@@ -131,8 +132,9 @@ public class TutorAddSubjectFragment extends DialogFragment {
         subject.put("time",time);
         subject.put("weekly_sched",weekly_sched);
         subject.put("tutorUID",tutorUID);
+        subject.put("subjUUID",subjUUID);
         //add to subject collection
-        String subjUUID=UUID.randomUUID().toString();
+
         db.collection("subjects").document(subjUUID)
                 .set(subject)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

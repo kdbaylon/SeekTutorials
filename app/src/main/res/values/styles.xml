@@ -9,6 +9,7 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:dialogTheme">@style/AlertDialogTheme</item>
+
     </style>
 
     <style name="Widget.SeekTutorials.Toolbar" parent="Widget.AppCompat.Toolbar">
@@ -84,6 +85,9 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
     </style>
