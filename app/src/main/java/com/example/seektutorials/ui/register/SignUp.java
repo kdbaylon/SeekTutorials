@@ -1,4 +1,4 @@
-package com.example.seektutorials;
+package com.example.seektutorials.ui.register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.example.seektutorials.R;
 import com.example.seektutorials.ui.login.LoginActivity;
-import com.example.seektutorials.ui.register.TuteeSignUpFragment;
-import com.example.seektutorials.ui.register.TutorSignUpFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

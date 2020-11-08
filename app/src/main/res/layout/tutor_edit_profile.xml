@@ -123,23 +123,7 @@
                 android:inputType="text"
                 android:textAppearance="?attr/textAppearanceHeadline6"  />
         </LinearLayout>
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/rating_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name">
-            <RatingBar
-                android:id="@+id/rating_bar_ave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:rating="4.5"
-                android:layout_gravity="center"
-                android:progressTint="@color/colorPrimaryDark"/>
-        </com.google.android.material.card.MaterialCardView>
+
         <TextView
             android:id="@+id/about"
             android:layout_width="match_parent"
@@ -153,7 +137,7 @@
             android:paddingEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rating_card" />
+            app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card"

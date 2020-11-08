@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
-import com.example.seektutorials.TuteeHome;
+import com.example.seektutorials.ui.tuteeHome.TuteeHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

@@ -1,41 +1,31 @@
 package com.example.seektutorials.ui.tutorHome.subjects;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.seektutorials.R;
-import com.example.seektutorials.TutorHome;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.seektutorials.ui.tutorHome.TutorHome;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class TutorAddSubjectFragment extends DialogFragment {
     private FirebaseAuth mAuth;

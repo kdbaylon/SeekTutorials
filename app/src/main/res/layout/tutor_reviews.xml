@@ -98,6 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
+                android:isIndicator="true"
                 android:layout_gravity="center"
                 android:progressTint="@color/colorPrimaryDark"/>
         </com.google.android.material.card.MaterialCardView>

@@ -144,6 +144,22 @@ public class TutorBookingsPendingFragment extends Fragment{
                                                                                 Toast.LENGTH_SHORT).show();
                                                                     }
                                                                 });
+                                                        db.collection("users").document(userUid).collection("bookings").document(model.getBookingUUID())
+                                                                .delete()
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        Toast.makeText(getActivity(),"Request declined",
+                                                                                Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Toast.makeText(getActivity(),"Failure on declining",
+                                                                                Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {

@@ -23,9 +23,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.login.LoginActivity"/>
-        <activity android:name=".SignUp"/>
-        <activity android:name=".TutorHome"/>
-        <activity android:name=".TuteeHome"/>
+        <activity android:name=".ui.register.SignUp"/>
+        <activity android:name=".ui.googleRegister.SignUpGoogle"/>
+        <activity android:name=".ui.tutorHome.TutorHome"/>
+        <activity android:name=".ui.tuteeHome.TuteeHome"/>
     </application>
 
 </manifest>

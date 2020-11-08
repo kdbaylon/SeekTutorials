@@ -15,24 +15,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
-import com.example.seektutorials.TutorHome;
-import com.example.seektutorials.ui.login.LoginActivity;
+import com.example.seektutorials.ui.tutorHome.TutorHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -148,6 +143,8 @@ public class EditTutorProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 editProfile(v);
+                v.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+                v.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
             }
         });
 
@@ -193,8 +190,7 @@ public class EditTutorProfileFragment extends Fragment {
                             //if the upload is successful
                             //hiding the progress dialog
                             progressDialog.dismiss();
-                            //and displaying a success toast
-                            Toast.makeText(getActivity(), "File Uploaded ", Toast.LENGTH_LONG).show();
+
 
                         }
                     })

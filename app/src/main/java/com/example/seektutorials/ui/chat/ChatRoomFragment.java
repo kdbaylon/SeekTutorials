@@ -155,10 +155,7 @@ public class ChatRoomFragment extends Fragment {
 
             }
 
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
+
             @Override
             public int getItemViewType(int position) {
                 if(getItem(position).getUID().equals(uid))

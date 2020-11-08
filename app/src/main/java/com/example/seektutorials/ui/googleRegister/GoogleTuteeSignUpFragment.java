@@ -1,4 +1,4 @@
-package com.example.seektutorials.ui.register;
+package com.example.seektutorials.ui.googleRegister;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.tuteeHome.TuteeHome;
@@ -31,24 +30,31 @@ import java.util.Map;
 /**
  * Tutee sign up fragment
  */
-public class TuteeSignUpFragment extends Fragment {
+public class GoogleTuteeSignUpFragment extends Fragment {
+    private String emailAdd, name;
     private FirebaseAuth mAuth;
-    private TextInputEditText fnameEditText, lnameEditText, emailEditText, passwordEditText, confirmPasswordEditText, courseEditText, locationEditText;
+    private TextInputEditText fnameEditText, lnameEditText, courseEditText, locationEditText;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid;
+    public static GoogleTuteeSignUpFragment newInstance(String string, String string2) {
+        Bundle bundle = new Bundle();
+        bundle.putString("emailAdd", string);
+        bundle.putString("name",string2);
+        GoogleTuteeSignUpFragment fragment = new GoogleTuteeSignUpFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.tutee_sign_up, null);
+        final View view = inflater.inflate(R.layout.google_tutee_sign_up, null);
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
         //getting input
         Button register = view.findViewById(R.id.registerButton);
         fnameEditText=view.findViewById(R.id.first_name);
         lnameEditText=view.findViewById(R.id.last_name);
-        emailEditText=view.findViewById(R.id.email);
-        passwordEditText=view.findViewById(R.id.password);
-        confirmPasswordEditText=view.findViewById(R.id.confirm_password);
         courseEditText=view.findViewById(R.id.course);
         locationEditText=view.findViewById(R.id.location);
         register.setOnClickListener(new View.OnClickListener() {
@@ -57,16 +63,20 @@ public class TuteeSignUpFragment extends Fragment {
                 registerTutee(view);
             }
         });
+        //get bundle
+        Bundle bundle = getArguments();
+        if(bundle!=null){
+            emailAdd = bundle.getString("emailAdd");
+            name = bundle.getString("name");
+        }
+        fnameEditText.setText(name);
         return view;
     }
     public void registerTutee(View view){
         // Take the values
-        String fname, lname, email, password, confirmPassword, course, location;
+        String fname, lname, email, course, location;
         fname = fnameEditText.getText().toString();
         lname = lnameEditText.getText().toString();
-        email = emailEditText.getText().toString();
-        password = passwordEditText.getText().toString();
-        confirmPassword = confirmPasswordEditText.getText().toString();
         course = courseEditText.getText().toString();
         location = locationEditText.getText().toString();
         //errors
@@ -76,18 +86,6 @@ public class TuteeSignUpFragment extends Fragment {
         }
         if (TextUtils.isEmpty(lname)) {
             Toast.makeText(getActivity(), "Enter last name!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getActivity(), "Enter email address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getActivity(), "Enter password!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(!(password.equals(confirmPassword))){
-            Toast.makeText(getActivity(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(course)) {
@@ -102,43 +100,26 @@ public class TuteeSignUpFragment extends Fragment {
         user.put("userType","tutee");
         user.put("fname", fname);
         user.put("lname", lname);
-        user.put("email", email);
+        user.put("email", emailAdd);
         user.put("course", course);
         user.put("location", location);
-
-
         //register
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+        uid=mAuth.getCurrentUser().getUid();
+        db.collection("users").document(uid)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            uid=mAuth.getCurrentUser().getUid();
-                            db.collection("users").document(uid)
-                                    .set(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getActivity(), "Document written failed.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                            startActivity(new Intent(getActivity(), TuteeHome.class));
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getActivity(), "Registration failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Document written failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
+        startActivity(new Intent(getActivity(), TuteeHome.class));
 
 
 
