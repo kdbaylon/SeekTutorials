@@ -11,7 +11,6 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import com.example.seektutorials.R;
-import com.example.seektutorials.ui.tuteeHome.bookings.PagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 

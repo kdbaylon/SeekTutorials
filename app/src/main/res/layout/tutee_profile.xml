@@ -13,7 +13,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.tutorHome.TuteeProfileFragment">
+        tools:context=".ui.tuteeHome.TuteeProfileFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -44,7 +44,7 @@
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:tint="@color/colorPrimaryDark"
-                    app:menu="@menu/logout_bar" />
+                    app:menu="@menu/logout_bar_tutee" />
             </LinearLayout>
 
 

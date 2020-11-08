@@ -17,7 +17,7 @@
 
     <com.google.android.material.card.MaterialCardView
     android:id="@+id/card1"
-    android:layout_width="385dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:clickable="true"
@@ -196,25 +196,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start">
-                 <Button
-                     android:id="@+id/bookButton"
-                     style="@style/Widget.SeekTutorials.Button"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="@string/send_request"/>
-                <Button
-                    android:id="@+id/cancelButton"
-                    style="@style/Widget.SeekTutorials.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="backButton"
-                    android:text="@string/cancel"/>
 
-            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

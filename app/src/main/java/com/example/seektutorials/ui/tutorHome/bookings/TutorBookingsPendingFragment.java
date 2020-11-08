@@ -173,10 +173,7 @@ public class TutorBookingsPendingFragment extends Fragment{
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.booking_tutor_pending, group, false);
                 return new TutorBookingsPendingFragment.BookingsViewHolder(view);
             }
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
+
 
         };
         //make adapter listen so it updates

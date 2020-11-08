@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
-import com.example.seektutorials.ui.tutorHome.bookings.TutorBookingsFinishedFragment;
+import com.example.seektutorials.ui.tuteeHome.reviews.TuteeAddAReviewFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,23 +41,23 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Tutee bookings finished fragment
  */
 public class TuteeBookingsFinishedFragment extends Fragment{
-    private FirebaseAuth mAuth;
+    public final int REVIEWED = 0;
+    public final int NOT_REVIEWED = 1;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userUid;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tutee_bookings_finished, null);
         // taking FirebaseAuth instance
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         userUid = mAuth.getCurrentUser().getUid();
         //get recyclerview
         RecyclerView bookingsRecyclerView = view.findViewById(R.id.bookings);
         bookingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bookingsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         Query query = db.collection("users").document(userUid).collection("bookings").whereEqualTo("status", "finished");
-        //show pending bookings
+        //show finished bookings
         FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>().setQuery(query, Session.class).build();
         final FirestoreRecyclerAdapter<Session, TuteeBookingsFinishedFragment.BookingsViewHolder> adapter = new FirestoreRecyclerAdapter<Session, TuteeBookingsFinishedFragment.BookingsViewHolder>(options) {
             @Override
@@ -67,26 +68,39 @@ public class TuteeBookingsFinishedFragment extends Fragment{
                 holder.setSched(model.getSched());
                 holder.setFee(model.getFee());
                 holder.setProfilepic(model.getUid());
-                holder.rateButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
+                final String subjUUID = model.getSubject();
+                final String tutorUID = model.getUid();
+                final String bookingUUID = model.getBookingUUID();
+                if(!model.isReviewed()){
+                    holder.rateButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            DialogFragment reviewFragment= TuteeAddAReviewFragment.newInstance(subjUUID,tutorUID,bookingUUID);
+                            reviewFragment.show(getActivity().getSupportFragmentManager(),"Review");
+                        }
+                    });
+                }
             }
 
             @Override
-            public TuteeBookingsFinishedFragment.BookingsViewHolder onCreateViewHolder(ViewGroup group, int i) {
-                // Using a custom layout for each item, we create a new instance of the viewholder
-                View view = LayoutInflater.from(group.getContext()).inflate(R.layout.booking_tutee_finished, group, false);
-                return new TuteeBookingsFinishedFragment.BookingsViewHolder(view);
+            public TuteeBookingsFinishedFragment.BookingsViewHolder onCreateViewHolder(ViewGroup group, int viewType) {
+                if(viewType == REVIEWED){
+                    View view = LayoutInflater.from(group.getContext()).inflate(R.layout.booking_no_button, group, false);
+                    return new TuteeBookingsFinishedFragment.BookingsViewHolder(view);
+                }else{
+                    View view = LayoutInflater.from(group.getContext()).inflate(R.layout.booking_tutee_finished, group, false);
+                    return new TuteeBookingsFinishedFragment.BookingsViewHolder(view);
+                }
+            }
+            @Override
+            public int getItemViewType(int position) {
+                if(getItem(position).isReviewed())
+                    return REVIEWED;
+                else
+                    return NOT_REVIEWED;
             }
 
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
+
 
         };
         //make adapter listen so it updates
@@ -110,7 +124,6 @@ public class TuteeBookingsFinishedFragment extends Fragment{
             fee = itemView.findViewById(R.id.fee);
             profilepic = itemView.findViewById(R.id.profilepic);
             rateButton = itemView.findViewById(R.id.rateButton);
-
         }
 
         public void setFname(String string) {

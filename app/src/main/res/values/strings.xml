@@ -36,9 +36,6 @@
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
     <string name="book">Book a Session</string>
-    <string name="rate">Rate tutor</string>
-    <string name="leave_review">Leave a Review</string>
-    <string name="comment">Comments about this tutor…</string>
     <string name="submit">Submit</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
@@ -48,13 +45,7 @@
     <string name="messages">Messages</string>
     <string name="classes">Classes</string>
     <string name="more">See More</string>
-    <string name="request_pending">Pending</string>
-    <string name="request_accepted">Accepted</string>
-    <string name="status_finished">Finished</string>
-    <string name="status_ongoing">On-going</string>
-    <string name="request_accept">Accept</string>
-    <string name="request_decline">Decline</string>
-    <string name="make_finished">Mark as finished</string>
+
 
     <string name="edit_profile">Edit Profile</string>
     <!---booking tabs-->
@@ -68,7 +59,6 @@
     <string name="add">Add</string>
     <string name="view_tutor_profile">View Profile</string>
     <string name="message_tutor">Message</string>
-    <string name="send_request">Book Session</string>
     <string name="cancel">Cancel</string>
     <string name="subj_no">Subj. No.</string>
     <string name="days_avail">Days Available (ex. "MWF", "TTh")</string>
@@ -80,6 +70,19 @@
     <string name="enter_time">Enter time</string>
     <string name="total_fee">Generate Total Fee:</string>
     <string name="decline_question">Decline Tutoring Session?</string>
+    <string name="request_pending">Pending</string>
+    <string name="request_accepted">Accepted</string>
+    <string name="status_finished">Finished</string>
+    <string name="status_ongoing">On-going</string>
+    <string name="request_accept">Accept</string>
+    <string name="request_decline">Decline</string>
+    <string name="make_finished">Mark as finished</string>
+    <string name="send_request">Book Session</string>
+    <!--review-->
+    <string name="tap_star">Tap a Star to Rate</string>
+    <string name="rate">Rate tutor</string>
+    <string name="leave_review">Leave a Review</string>
+    <string name="comment">Write a Review</string>
     <!--Chat-->
     <string name="send">Send</string>
     <string name="enter_msg_here">Enter Message Here…</string>

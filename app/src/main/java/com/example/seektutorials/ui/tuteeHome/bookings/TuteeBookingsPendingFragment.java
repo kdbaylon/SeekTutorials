@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,10 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
-import com.example.seektutorials.ui.chat.ChatRoomFragment;
-import com.example.seektutorials.ui.tuteeHome.search.Subjectt;
-import com.example.seektutorials.ui.tuteeHome.search.TuteeSearchFragment;
-import com.example.seektutorials.ui.tuteeHome.search.ViewTutorProfileFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,47 +47,48 @@ public class TuteeBookingsPendingFragment extends Fragment{
         View view = inflater.inflate(R.layout.tutee_bookings_pending, null);
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
-        userUid=mAuth.getCurrentUser().getUid();
-        //get recyclerview
-        RecyclerView bookingsRecyclerView = view.findViewById(R.id.bookings);
-        bookingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bookingsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        Query query = db.collection("users").document(userUid).collection("bookings").whereEqualTo("status","pending");
-        //show pending bookings
-        FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>().setQuery(query, Session.class).build();
-        final FirestoreRecyclerAdapter<Session, TuteeBookingsPendingFragment.BookingsViewHolder> adapter = new FirestoreRecyclerAdapter<Session, TuteeBookingsPendingFragment.BookingsViewHolder>(options) {
-            @Override
-            public void onBindViewHolder(TuteeBookingsPendingFragment.BookingsViewHolder holder, int position, Session model) {
-                holder.setFname(model.getUid());
-                holder.setLname(model.getUid());
-                holder.setSubject(model.getSubject());
-                holder.setSched(model.getSched());
-                holder.setFee(model.getFee());
-                holder.setProfilepic(model.getUid());
+        userUid = mAuth.getCurrentUser().getUid();
+        if(mAuth.getCurrentUser() == null) {
+            getActivity().finish();
+        }else {
+            //get recyclerview
+            RecyclerView bookingsRecyclerView = view.findViewById(R.id.bookings);
+            bookingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            bookingsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            Query query = db.collection("users").document(userUid).collection("bookings").whereEqualTo("status", "pending");
+            //show pending bookings
+            FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>().setQuery(query, Session.class).build();
+            final FirestoreRecyclerAdapter<Session, TuteeBookingsPendingFragment.BookingsViewHolder> adapter = new FirestoreRecyclerAdapter<Session, TuteeBookingsPendingFragment.BookingsViewHolder>(options) {
+                @Override
+                public void onBindViewHolder(TuteeBookingsPendingFragment.BookingsViewHolder holder, int position, Session model) {
+                    holder.setFname(model.getUid());
+                    holder.setLname(model.getUid());
+                    holder.setSubject(model.getSubject());
+                    holder.setSched(model.getSched());
+                    holder.setFee(model.getFee());
+                    holder.setProfilepic(model.getUid());
+                }
 
-            }
+                @Override
+                public TuteeBookingsPendingFragment.BookingsViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                    // Using a custom layout for each item, we create a new instance of the viewholder
+                    View view = LayoutInflater.from(group.getContext()).inflate(R.layout.booking_no_button, group, false);
+                    return new TuteeBookingsPendingFragment.BookingsViewHolder(view);
+                }
 
-            @Override
-            public TuteeBookingsPendingFragment.BookingsViewHolder onCreateViewHolder(ViewGroup group, int i) {
-                // Using a custom layout for each item, we create a new instance of the viewholder
-                View view = LayoutInflater.from(group.getContext()).inflate(R.layout.booking_no_button, group, false);
-                return new TuteeBookingsPendingFragment.BookingsViewHolder(view);
-            }
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
 
-        };
-        //make adapter listen so it updates
-        adapter.startListening();
-        bookingsRecyclerView.setAdapter(adapter);
+            };
+            //make adapter listen so it updates
+            adapter.startListening();
+            bookingsRecyclerView.setAdapter(adapter);
+        }
+            return view;
 
-        return view;
     }
     public class BookingsViewHolder extends RecyclerView.ViewHolder{
         public TextView subject, fname, lname, sched, fee;
         public CircleImageView profilepic;
+
         public BookingsViewHolder(View itemView) {
             super(itemView);
             subject = itemView.findViewById(R.id.subject);
@@ -101,8 +97,8 @@ public class TuteeBookingsPendingFragment extends Fragment{
             sched = itemView.findViewById(R.id.sched);
             fee = itemView.findViewById(R.id.fee);
             profilepic = itemView.findViewById(R.id.profilepic);
-
         }
+
         public void setFname(String string) {
             DocumentReference reference = db.collection("users").document(string);
             reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

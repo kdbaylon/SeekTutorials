@@ -40,7 +40,6 @@ import java.util.ArrayList;
  */
 public class TutorSubjectsFragment extends Fragment {
     private FirebaseAuth mAuth;
-    FloatingActionButton addButton;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid;
     @Nullable
@@ -81,8 +80,7 @@ public class TutorSubjectsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         MaterialAlertDialogBuilder dialog =new MaterialAlertDialogBuilder(getActivity(),R.style.AlertDialogTheme);
-                        dialog.setTitle(R.string.delete)
-                                .setMessage(R.string.delete_subject)
+                        dialog.setMessage(R.string.delete_subject)
                                 .setCancelable(false)
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {

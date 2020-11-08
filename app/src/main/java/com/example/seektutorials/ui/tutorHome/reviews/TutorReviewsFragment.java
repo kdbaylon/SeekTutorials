@@ -42,6 +42,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class TutorReviewsFragment extends Fragment {
     private FirebaseAuth mAuth;
+    public float average;
+    public float counter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid;
     @Nullable
@@ -52,6 +54,8 @@ public class TutorReviewsFragment extends Fragment {
         //get layout addresses
         final TextView firstNameTextView = view.findViewById(R.id.fname);
         final TextView lastNameTextView = view.findViewById(R.id.lname);
+        final RatingBar aveRating = view.findViewById(R.id.ratingBarAve);
+
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
         uid=mAuth.getCurrentUser().getUid();
@@ -86,12 +90,17 @@ public class TutorReviewsFragment extends Fragment {
         final FirestoreRecyclerAdapter<Review, TutorReviewsFragment.TutorReviewCardViewHolder> adapter = new FirestoreRecyclerAdapter<Review, TutorReviewsFragment.TutorReviewCardViewHolder>(options) {
             @Override
             public void onBindViewHolder(TutorReviewsFragment.TutorReviewCardViewHolder holder, int position, Review model) {
-                holder.setFname(model.getFname());
-                holder.setLname(model.getLname());
+                holder.setFname(model.getTuteeUID());
+                holder.setLname(model.getTuteeUID());
                 holder.setComment(model.getComment());
                 holder.setSubject(model.getSubject());
                 holder.setRate(model.getRate());
                 holder.setProfilepic(model.getTuteeUID());
+                counter +=1;
+                average +=model.getRate();
+                Float aveFinal= average/counter;
+                Toast.makeText(getActivity(), String.valueOf(aveFinal), Toast.LENGTH_SHORT).show();
+                aveRating.setRating(aveFinal);
             }
 
             @Override
@@ -107,9 +116,8 @@ public class TutorReviewsFragment extends Fragment {
 
         };
         adapter.startListening();
-        //Final step, where "mRecyclerView" is defined in your xml layout as
-        //the recyclerview
         mRecyclerView.setAdapter(adapter);
+
         return view;
     }
     public class TutorReviewCardViewHolder extends RecyclerView.ViewHolder{
@@ -127,9 +135,44 @@ public class TutorReviewsFragment extends Fragment {
 
         }
         public void setFname(String string) {
-            fname.setText(string);
+            DocumentReference reference = db.collection("users").document(string);
+            reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null && document.exists()){
+                            //get text
+                            String fnamee = document.getString("fname");
+                            fname.setText(fnamee);
+                        } else {
+                            Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
-        public void setLname(String string) {lname.setText(string);}
+        public void setLname(String string) {
+            DocumentReference reference = db.collection("users").document(string);
+            reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null && document.exists()){
+                            //get text
+                            String lnamee = document.getString("lname");
+                            lname.setText(lnamee);
+                        }else {
+                            Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });}
         public void setComment(String string) { comment.setText(string); }
         public void setSubject(String string) { subject.setText(string); }
         public void setRate(Float f) {

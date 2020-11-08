@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -72,11 +73,11 @@ public class TutorHome extends AppCompatActivity {
 
     }
 
-    public void logOut(MenuItem item) {
-        FirebaseAuth.getInstance().signOut();
+    public void logOutTutor(MenuItem item) {
         Intent intent = new Intent(TutorHome.this, LoginActivity.class);
         startActivity(intent);
         TutorHome.this.finish();
+        FirebaseAuth.getInstance().signOut();
     }
     public void editProfile(MenuItem item) {
         openFragment(new EditTutorProfileFragment());

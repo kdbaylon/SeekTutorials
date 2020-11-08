@@ -4,14 +4,16 @@ package com.example.seektutorials.ui.tuteeHome.bookings;
 public class Session {
     public Session(){}
     public String subject, uid, bookingUUID, fee, sched, status;
+    public boolean reviewed;
 
-    public Session(String subject, String uid, String bookingUUID, String fee, String sched, String status) {
+    public Session(String subject, String uid, String bookingUUID, String fee, String sched, String status, boolean reviewed) {
         this.subject = subject;
         this.uid = uid;
         this.bookingUUID = bookingUUID;
         this.fee = fee;
         this.sched = sched;
         this.status = status;
+        this.reviewed = reviewed;
     }
 
     public String getSubject() {
@@ -60,5 +62,13 @@ public class Session {
 
     public void setBookingUUID(String bookingUUID) {
         this.bookingUUID = bookingUUID;
+    }
+
+    public boolean isReviewed() {
+        return reviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        this.reviewed = reviewed;
     }
 }

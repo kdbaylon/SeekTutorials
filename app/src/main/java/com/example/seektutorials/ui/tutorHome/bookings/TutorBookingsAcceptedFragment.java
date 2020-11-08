@@ -84,22 +84,24 @@ public class TutorBookingsAcceptedFragment extends Fragment{
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        db.collection("users").document(model.getUid()).collection("bookings").document(model.getBookingUUID())
-                                                .update(update)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        Toast.makeText(getActivity(),"Session marked as finished",
-                                                                Toast.LENGTH_SHORT).show();
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Toast.makeText(getActivity(),"Fail to mark as finished",
-                                                                Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
+                                        Toast.makeText(getActivity(),"Session marked as finished",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(),"Fail to mark as finished",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                        db.collection("users").document(model.getUid()).collection("bookings").document(model.getBookingUUID())
+                                .update(update)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getActivity(),"Session marked as finished",
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {

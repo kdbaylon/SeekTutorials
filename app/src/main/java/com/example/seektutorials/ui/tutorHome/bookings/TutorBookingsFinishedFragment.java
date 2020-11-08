@@ -77,10 +77,6 @@ public class TutorBookingsFinishedFragment extends Fragment {
                 return new TutorBookingsFinishedFragment.BookingsViewHolder(view);
             }
 
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
 
         };
         //make adapter listen so it updates

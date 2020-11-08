@@ -54,7 +54,7 @@ public class TuteeBookingsAcceptedFragment extends Fragment {
         bookingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bookingsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         Query query = db.collection("users").document(userUid).collection("bookings").whereEqualTo("status", "accepted");
-        //show pending bookings
+        //show accepted bookings
         FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>().setQuery(query, Session.class).build();
         final FirestoreRecyclerAdapter<Session, TuteeBookingsAcceptedFragment.BookingsViewHolder> adapter = new FirestoreRecyclerAdapter<Session, TuteeBookingsAcceptedFragment.BookingsViewHolder>(options) {
             @Override
@@ -75,10 +75,7 @@ public class TuteeBookingsAcceptedFragment extends Fragment {
                 return new TuteeBookingsAcceptedFragment.BookingsViewHolder(view);
             }
 
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
+
 
         };
         //make adapter listen so it updates

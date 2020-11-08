@@ -14,7 +14,7 @@
         android:id="@+id/logout"
         android:icon="@drawable/round_exit_to_app_24"
         android:title="@string/logout"
-        android:onClick="logOut"
+        android:onClick="logOutTutor"
         android:contentDescription="@string/logout"
         app:showAsAction="ifRoom" />
 

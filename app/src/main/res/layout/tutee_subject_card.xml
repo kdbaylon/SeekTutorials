@@ -122,13 +122,14 @@
                             android:textAppearance="?attr/textAppearanceBody2"
                             android:textColor="?android:attr/textColorSecondary" />
                     </LinearLayout>
-                    <RatingBar
-                        android:id="@+id/rating_bar_ave"
+                    <TextView
+                        android:id="@+id/desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:rating="4.7"
-                        android:progressTint="@color/colorPrimaryDark" />
+                        android:layout_marginTop="8dp"
+                        android:text="@string/description"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorSecondary" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout

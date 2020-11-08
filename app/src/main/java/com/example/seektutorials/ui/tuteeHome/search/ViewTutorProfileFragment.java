@@ -46,6 +46,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Tutor profile fragment
  */
 public class ViewTutorProfileFragment extends Fragment {
+    public float average;
+    public float counter;
     //Firebase
     //storage
     private StorageReference storageReference;
@@ -79,6 +81,7 @@ public class ViewTutorProfileFragment extends Fragment {
         final TextView schoolTextView = view.findViewById(R.id.school);
         final TextView courseTextView = view.findViewById(R.id.course);
         final TextView emailTextView = view.findViewById(R.id.email);
+        final RatingBar ratingBarAve = view.findViewById(R.id.rating_bar_ave);
         //subjects and reviews recyclerviews
         RecyclerView subjects = (RecyclerView) view.findViewById(R.id.subjects_card);
         RecyclerView reviews = (RecyclerView) view.findViewById(R.id.reviews_card);
@@ -147,7 +150,7 @@ public class ViewTutorProfileFragment extends Fragment {
             }
         });
         //recyclerview for subjects
-        subjects.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        subjects.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         subjects.setItemAnimator(new DefaultItemAnimator());
         Query subject_query = db.collection("users").document(tutorUID).collection("subjects");
         FirestoreRecyclerOptions<Subject> subject_options = new FirestoreRecyclerOptions.Builder<Subject>().setQuery(subject_query, Subject.class).build();
@@ -175,7 +178,7 @@ public class ViewTutorProfileFragment extends Fragment {
 
         };
         //recyclerview for reviews
-        reviews.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        reviews.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         reviews.setItemAnimator(new DefaultItemAnimator());
         Query review_query = db.collection("users").document(tutorUID).collection("reviews");
         FirestoreRecyclerOptions<Review> review_options = new FirestoreRecyclerOptions.Builder<Review>().setQuery(review_query, Review.class).build();
@@ -189,7 +192,10 @@ public class ViewTutorProfileFragment extends Fragment {
                 holder.setSubject(model.getSubject());
                 holder.setRate(model.getRate());
                 holder.setProfilepic(model.getTuteeUID());
-
+                counter +=1;
+                average +=model.getRate();
+                Float aveFinal= average/counter;
+                ratingBarAve.setRating(aveFinal);
             }
 
             @Override
@@ -208,6 +214,8 @@ public class ViewTutorProfileFragment extends Fragment {
         review_adapter.startListening();
         subjects.setAdapter(subject_adapter);
         reviews.setAdapter(review_adapter);
+
+        Toast.makeText(getActivity(), String.valueOf(ratingBarAve.getRating()), Toast.LENGTH_SHORT).show();
         return view;
     }
     //subject viewholder

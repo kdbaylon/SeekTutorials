@@ -228,7 +228,6 @@
         android:id="@+id/subjects_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/subjects"/>
     <TextView
         android:id="@+id/reviews"
@@ -248,7 +247,6 @@
         android:id="@+id/reviews_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/reviews"
         app:layout_constraintStart_toStartOf="parent"/>
 

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -85,17 +86,14 @@ public class TuteeSearchFragment extends Fragment {
                 holder.setTutorFname(model.getTutorUID());
                 holder.setTutorLname(model.getTutorUID());
                 holder.setProfilepic(model.getTutorUID());
+                holder.setDesc(model.getTutorUID());
                 final String tutorUID=model.getTutorUID();
                 final String subjUUID=model.getSubjUUID();
                 holder.book.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Fragment nextFrag= TuteeBookSessionFragment.newInstance(subjUUID,tutorUID);
-                        getActivity().getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
-                                .addToBackStack(null)
-                                .commit();
+                        DialogFragment nextFrag= TuteeBookSessionFragment.newInstance(subjUUID,tutorUID);
+                        nextFrag.show(getActivity().getSupportFragmentManager(),"Book");
                     }
                 });
                 holder.view_tutor.setOnClickListener(new View.OnClickListener() {
@@ -128,10 +126,7 @@ public class TuteeSearchFragment extends Fragment {
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tutee_subject_card, group, false);
                 return new TuteeSearchFragment.TuteeSubjectCardViewHolder(view);
             }
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
+
 
         };
         //make adapter listen so it updates
@@ -141,7 +136,7 @@ public class TuteeSearchFragment extends Fragment {
         return view;
     }
     public class TuteeSubjectCardViewHolder extends RecyclerView.ViewHolder{
-        public TextView name, description, weekly_sched, time, fee, tutorFname, tutorLname;
+        public TextView name, description, weekly_sched, time, fee, tutorFname, tutorLname, desc;
         public Button book, view_tutor, message;
         public CircleImageView profilepic;
         public TuteeSubjectCardViewHolder(View itemView) {
@@ -157,6 +152,7 @@ public class TuteeSearchFragment extends Fragment {
             book = itemView.findViewById(R.id.request);
             view_tutor = itemView.findViewById(R.id.view_tutor);
             message = itemView.findViewById(R.id.message);
+            desc = itemView.findViewById(R.id.desc);
         }
         public void setName(String string) {
             name.setText(string);
@@ -171,6 +167,26 @@ public class TuteeSearchFragment extends Fragment {
             time.setText(string);
         }
         public void setFee(String string) { fee.setText(string); }
+        public void setDesc(String string) {
+            DocumentReference reference = db.collection("users").document(string);
+            reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null && document.exists()){
+                            //get text
+                            String description = document.getString("desc");
+                            desc.setText(description);
+                        } else {
+                            Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
         public void setTutorFname(String string) {
             DocumentReference reference = db.collection("users").document(string);
             reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

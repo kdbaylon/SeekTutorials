@@ -14,20 +14,17 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                TuteeBookingsPendingFragment tab1 = new TuteeBookingsPendingFragment();
-                return tab1;
+                return new TuteeBookingsPendingFragment();
             case 1:
-                TuteeBookingsAcceptedFragment tab2 = new TuteeBookingsAcceptedFragment();
-                return tab2;
+                return new TuteeBookingsAcceptedFragment();
             case 2:
-                TuteeBookingsFinishedFragment tab3 = new TuteeBookingsFinishedFragment();
-                return tab3;
+                return new TuteeBookingsFinishedFragment();
             default:
                 return null;
         }
     }
     @Override
     public int getCount() {
-        return mNumOfTabs;
+        return 3;
     }
 }

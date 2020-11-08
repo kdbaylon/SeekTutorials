@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.KeyEvent;
@@ -58,11 +59,11 @@ public class TuteeHome extends AppCompatActivity{
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-    public void logOut(MenuItem item) {
-        FirebaseAuth.getInstance().signOut();
+    public void logOutTutee(MenuItem item) {
         Intent intent = new Intent(TuteeHome.this, LoginActivity.class);
-        startActivity(intent);
         TuteeHome.this.finish();
+        startActivity(intent);
+        FirebaseAuth.getInstance().signOut();
     }
     public void editProfile(MenuItem item) {
         openFragment(new EditTuteeProfileFragment());
