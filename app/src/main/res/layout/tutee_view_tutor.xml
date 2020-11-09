@@ -153,7 +153,6 @@
                 android:id="@+id/desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/description"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/textColorPrimary" />
             <TextView
@@ -166,7 +165,6 @@
                 android:id="@+id/loc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/loc_sample"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/textColorPrimary"
                 android:paddingStart="10dp"
@@ -203,7 +201,6 @@
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/email"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/textColorPrimary"
                 android:paddingStart="10dp"

@@ -29,11 +29,8 @@
     <string name="reviews">Reviews</string>
     <!--Strings related to tutee and tutor -->
     <string name="home">Home</string>
-    <string name="search_sub_tutor">Search for subject or tutor</string>
     <string name="bookings">Bookings</string>
-    <string name="contacts">Contacts</string>
     <string name="search">Search</string>
-    <string name="filter">Filter</string>
     <string name="sort">Sort</string>
     <string name="book">Book a Session</string>
     <string name="submit">Submit</string>
@@ -45,8 +42,6 @@
     <string name="messages">Messages</string>
     <string name="classes">Classes</string>
     <string name="more">See More</string>
-
-
     <string name="edit_profile">Edit Profile</string>
     <!---booking tabs-->
     <string name="pending">Pending</string>
@@ -92,22 +87,18 @@
     <string name="subj_za">Subject Z-A</string>
     <string name="fee_lh">Fee low to high</string>
     <string name="fee_hl">Fee high to low</string>
-
     <!--Placeholders-->
     <string name="subject_desc">Short description about the subject</string>
     <string name="subject_specific">Specific Subject</string>
     <string name="sched">Weekly Schedule</string>
     <string name="space">" "</string>
     <string name="barrier">" | "</string>
-    <string name="email">email@up.edu.ph</string>
-    <string name="contact">09123456789</string>
-    <string name="description">Short description about me</string>
     <string name="edubg">Educational Background</string>
     <string name="schoolsample">University of the Philippines Los Baños - 3rd year BSCS"</string>
     <string name="degprog">Degree Program</string>
     <string name="rating_comment">Good Job!</string>
     <string name="loc_sample">Taguig City</string>
-    <string name="hello">Hello, ask ko lang po</string>
+    <string name="hello">Hello, placeholder</string>
     <string name="sched_sample">01/02/2021 2PM-4PM</string>
     <string name="fee_sample">P500</string>
     <string name="google_sign_in">Google Sign In</string>

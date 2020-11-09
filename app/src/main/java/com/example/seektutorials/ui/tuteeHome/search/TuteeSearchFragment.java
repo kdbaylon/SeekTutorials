@@ -70,7 +70,7 @@ public class TuteeSearchFragment extends Fragment {
         final Button sortButton = view.findViewById(R.id.sort_button);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        query = db.collection("subjects").orderBy("name",Query.Direction.ASCENDING);
+        query = db.collection("subjects");
         options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
         //show subjects
         FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
@@ -129,6 +129,7 @@ public class TuteeSearchFragment extends Fragment {
         //make adapter listen so it updates
         adapter.startListening();
         mRecyclerView.setAdapter(adapter);
+
         //sort button
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +139,7 @@ public class TuteeSearchFragment extends Fragment {
                 p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         if(item.getTitle().equals("Subject A-Z")){
-                            query= db.collection("subjects").orderBy("name",Query.Direction.ASCENDING);
+                            query= query.orderBy("name",Query.Direction.ASCENDING);
                             options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
                             FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
                                 @Override

@@ -57,26 +57,13 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sort_button"
             style="@style/Widget.SeekTutorials.Button.TextButton"
-            android:layout_width="206dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
             android:text="@string/sort"
             app:icon="@drawable/round_sort_by_alpha_24"
             app:iconTint="@color/colorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/filter_button"
-            style="@style/Widget.SeekTutorials.Button.TextButton"
-            android:layout_width="206dp"
-            android:layout_height="50dp"
-            android:text="@string/filter"
-            app:icon="@drawable/filter"
-            app:iconSize="30dp"
-            app:iconTint="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/sort_button" />
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
