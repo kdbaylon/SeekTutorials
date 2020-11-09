@@ -26,9 +26,10 @@ public class SignUpGoogle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        openFragment(new TutorSignUpFragment());
         final String emailAdd = getIntent().getExtras().getString("emailAdd");
         final String name = getIntent().getExtras().getString("name");
+        Fragment nextFrag= GoogleTutorSignUpFragment.newInstance(emailAdd,name);
+        openFragment(nextFrag);
         //bottom nav
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

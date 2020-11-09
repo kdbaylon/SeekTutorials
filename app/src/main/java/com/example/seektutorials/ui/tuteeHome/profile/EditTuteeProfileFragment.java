@@ -137,8 +137,6 @@ public class EditTuteeProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 editProfile(v);
-                v.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-                v.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
             }
         });
 
@@ -174,8 +172,9 @@ public class EditTuteeProfileFragment extends Fragment {
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Uploading");
             progressDialog.show();
-            String id= mAuth.getUid().toString();
+            uid= mAuth.getUid();
             StorageReference ref = storageReference.child("images/"+ uid);
+
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -184,8 +183,6 @@ public class EditTuteeProfileFragment extends Fragment {
                             //hiding the progress dialog
                             progressDialog.dismiss();
 
-                            //and displaying a success toast
-                            Toast.makeText(getActivity(), "File Uploaded ", Toast.LENGTH_LONG).show();
 
                         }
                     })

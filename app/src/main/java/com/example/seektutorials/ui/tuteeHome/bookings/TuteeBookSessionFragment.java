@@ -220,11 +220,12 @@ public class TuteeBookSessionFragment extends DialogFragment {
                                 //no total fee error
                                 if (TextUtils.isEmpty(feeTextView.getText())) {
                                     Toast.makeText(getActivity(), "Click generate total fee!", Toast.LENGTH_SHORT).show();
-                                    return;
+                                }
+                                if (feeTextView.getText().toString().equals("0.0 php")) {
+                                    Toast.makeText(getActivity(), "Click generate total fee!", Toast.LENGTH_SHORT).show();
                                 }
                                 if (datePicker.getText().toString().equals("Enter date")) {
                                     Toast.makeText(getActivity(), "Enter date!", Toast.LENGTH_SHORT).show();
-                                    return;
                                 }
                                 //generate rand uuid for each document of booking session
                                 final String bookingUUID = UUID.randomUUID().toString();

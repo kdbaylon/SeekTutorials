@@ -143,8 +143,6 @@ public class EditTutorProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 editProfile(v);
-                v.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
-                v.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
             }
         });
 
