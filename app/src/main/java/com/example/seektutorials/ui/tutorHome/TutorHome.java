@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toolbar;
 
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.login.LoginActivity;
@@ -87,5 +88,9 @@ public class TutorHome extends AppCompatActivity {
         this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
     }
     public void addSubject(View view) { openFragment(new TutorAddSubjectFragment());}
+    public void setSupportActionBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+    }
 }

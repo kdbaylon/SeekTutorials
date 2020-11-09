@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toolbar;
 
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.chat.MessagesFragment;
@@ -71,5 +72,12 @@ public class TuteeHome extends AppCompatActivity{
     public void backButton(View view) {
         this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
         this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
+    }
+
+
+    public void setSupportActionBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
 }

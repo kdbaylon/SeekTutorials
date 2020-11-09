@@ -1,15 +1,21 @@
 package com.example.seektutorials.ui.chat;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
+import com.example.seektutorials.ui.login.LoginActivity;
+import com.example.seektutorials.ui.tuteeHome.TuteeHome;
+import com.example.seektutorials.ui.tuteeHome.bookings.TuteeBookSessionFragment;
+import com.example.seektutorials.ui.tuteeHome.search.Subjectt;
+import com.example.seektutorials.ui.tuteeHome.search.TuteeSearchFragment;
+import com.example.seektutorials.ui.tuteeHome.search.ViewTutorProfileFragment;
+import com.example.seektutorials.ui.tutorHome.TutorHome;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,12 +49,15 @@ import com.google.firebase.storage.StorageReference;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Tutor messages fragment
+ * messages fragment
  */
 public class MessagesFragment extends Fragment {
     private FirebaseAuth mAuth;
+    private FirestoreRecyclerOptions<Message> options;
+    private RecyclerView messages;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,11 +65,11 @@ public class MessagesFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         uid=mAuth.getCurrentUser().getUid();
         View view = inflater.inflate(R.layout.messages, null);
-        RecyclerView messages = (RecyclerView) view.findViewById(R.id.messages);
+        messages = (RecyclerView) view.findViewById(R.id.messages);
         messages.setLayoutManager(new LinearLayoutManager(getActivity()));
         messages.setItemAnimator(new DefaultItemAnimator());
         Query query = db.collection("users").document(uid).collection("chats");
-        FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>().setQuery(query, Message.class).build();
+        options = new FirestoreRecyclerOptions.Builder<Message>().setQuery(query, Message.class).build();
         final FirestoreRecyclerAdapter<Message, MessagesFragment.MessageViewHolder> adapter = new FirestoreRecyclerAdapter<Message, MessagesFragment.MessageViewHolder>(options) {
             @Override
             public void onBindViewHolder(MessagesFragment.MessageViewHolder holder, int position, final Message model) {
@@ -81,16 +97,14 @@ public class MessagesFragment extends Fragment {
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.chat_card, group, false);
                 return new MessagesFragment.MessageViewHolder(view);
             }
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
 
         };
         adapter.startListening();
         messages.setAdapter(adapter);
         return view;
     }
+
+
     public class MessageViewHolder extends RecyclerView.ViewHolder{
         public TextView firstname, lastname, message;
         public CircleImageView profilepic;

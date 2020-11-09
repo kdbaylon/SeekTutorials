@@ -37,14 +37,6 @@
                     android:textSize="43sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/topAppBar"
-                    style="@style/Widget.SeekTutorials.Toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:tint="@color/colorPrimaryDark"
-                    app:menu="@menu/top_app_bar" />
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 

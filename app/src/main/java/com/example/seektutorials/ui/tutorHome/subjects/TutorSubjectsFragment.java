@@ -1,52 +1,65 @@
 package com.example.seektutorials.ui.tutorHome.subjects;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.seektutorials.R;
+import com.example.seektutorials.ui.chat.ChatRoomFragment;
+import com.example.seektutorials.ui.tuteeHome.bookings.TuteeBookSessionFragment;
+import com.example.seektutorials.ui.tuteeHome.search.Subjectt;
+import com.example.seektutorials.ui.tuteeHome.search.TuteeSearchFragment;
+import com.example.seektutorials.ui.tuteeHome.search.ViewTutorProfileFragment;
+import com.example.seektutorials.ui.tutorHome.TutorHome;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
-import java.util.ArrayList;
 
 /**
  * Tutor subjects fragment
  */
 public class TutorSubjectsFragment extends Fragment {
     private FirebaseAuth mAuth;
+    private RecyclerView mRecyclerView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid;
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) view.findViewById(R.id.topAppBar);
+        toolbar.setTitle("");
+        toolbar.setSubtitle("");
+        ((TutorHome)getActivity()).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tutor_subjects, null);
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
         uid=mAuth.getCurrentUser().getUid();
@@ -134,17 +147,11 @@ public class TutorSubjectsFragment extends Fragment {
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tutor_subject_card, group, false);
                 return new TutorSubjectCardViewHolder(view);
             }
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
 
 
         };
         //make adapter listen so it updates
         adapter.startListening();
-    //Final step, where "mRecyclerView" is defined in your xml layout as
-    //the recyclerview
         mRecyclerView.setAdapter(adapter);
 
         return view;
@@ -182,5 +189,114 @@ public class TutorSubjectsFragment extends Fragment {
         }
 
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.top_app_bar, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView)item.getActionView();
+        searchView.setQueryHint("SUBJECT101");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //called when search button is pressed
+                Query query = db.collection("users").document(uid).collection("subjects").whereEqualTo("name",s);
+                //show subjects
+                FirestoreRecyclerOptions<Subject> options = new FirestoreRecyclerOptions.Builder<Subject>().setQuery(query, Subject.class).build();
+                final FirestoreRecyclerAdapter<Subject, TutorSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subject, TutorSubjectCardViewHolder>(options) {
+                    @Override
+                    public void onBindViewHolder(TutorSubjectCardViewHolder holder, int position, final Subject model) {
+                        holder.setName(model.getName());
+                        holder.setDescription(model.getDescription());
+                        holder.setWeekly_sched(model.getWeekly_sched());
+                        holder.setTime(model.getTime());
+                        holder.setFee(model.getFee());
+                        final String subjUUID = model.getSubjUUID().toString();
 
+                        //add the data to a bundle to be accessed by other fragments
+                        holder.editButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Fragment nextFrag= TutorEditSubjectFragment.newInstance(subjUUID);
+                                getActivity().getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                        });
+                        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MaterialAlertDialogBuilder dialog =new MaterialAlertDialogBuilder(getActivity(),R.style.AlertDialogTheme);
+                                dialog.setMessage(R.string.delete_subject)
+                                        .setCancelable(false)
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                uid=mAuth.getCurrentUser().getUid();
+                                                db.collection("users").document(uid).collection("subjects").document(subjUUID)
+                                                        .delete()
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                db.collection("subjects").document(subjUUID)
+                                                                        .delete()
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+                                                                                Toast.makeText(getActivity(),"Subject deleted",
+                                                                                        Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        })
+                                                                        .addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Toast.makeText(getActivity(),"Failure on deleting subject",
+                                                                                        Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        });
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Toast.makeText(getActivity(),"Failure on deleting subject",
+                                                                        Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                            }
+                                        })
+                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                //  Action for 'NO' Button
+                                                dialog.cancel();
+                                            }
+                                        });
+                                dialog.show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public TutorSubjectCardViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                        // Using a custom layout for each item, we create a new instance of the viewholder
+                        View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tutor_subject_card, group, false);
+                        return new TutorSubjectCardViewHolder(view);
+                    }
+
+
+                };
+                adapter.startListening();
+                mRecyclerView.setAdapter(adapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                //called when typing
+                return false;
+            }
+
+        });
+    }
 }

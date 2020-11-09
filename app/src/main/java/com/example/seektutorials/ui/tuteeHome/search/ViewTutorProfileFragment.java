@@ -214,8 +214,6 @@ public class ViewTutorProfileFragment extends Fragment {
         review_adapter.startListening();
         subjects.setAdapter(subject_adapter);
         reviews.setAdapter(review_adapter);
-
-        Toast.makeText(getActivity(), String.valueOf(ratingBarAve.getRating()), Toast.LENGTH_SHORT).show();
         return view;
     }
     //subject viewholder

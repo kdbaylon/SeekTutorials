@@ -99,7 +99,6 @@ public class TutorReviewsFragment extends Fragment {
                 counter +=1;
                 average +=model.getRate();
                 Float aveFinal= average/counter;
-                Toast.makeText(getActivity(), String.valueOf(aveFinal), Toast.LENGTH_SHORT).show();
                 aveRating.setRating(aveFinal);
             }
 
@@ -109,10 +108,7 @@ public class TutorReviewsFragment extends Fragment {
                 View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tutor_review_card, group, false);
                 return new TutorReviewsFragment.TutorReviewCardViewHolder(view);
             }
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
-            }
+
 
         };
         adapter.startListening();

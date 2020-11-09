@@ -33,7 +33,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="199dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="0dp"
@@ -43,7 +43,7 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="43sp" />
 
-                <com.google.android.material.appbar.MaterialToolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/topAppBar"
                     style="@style/Widget.SeekTutorials.Toolbar"
                     android:layout_width="match_parent"

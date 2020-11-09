@@ -155,7 +155,6 @@ public class ChatRoomFragment extends Fragment {
 
             }
 
-
             @Override
             public int getItemViewType(int position) {
                 if(getItem(position).getUID().equals(uid))
