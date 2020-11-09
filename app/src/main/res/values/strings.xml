@@ -87,6 +87,12 @@
     <string name="send">Send</string>
     <string name="enter_msg_here">Enter Message Here…</string>
     <string name="no_msgs">No Messages</string>
+    <!--Sort-->
+    <string name="subj_az">Subject A-Z</string>
+    <string name="subj_za">Subject Z-A</string>
+    <string name="fee_lh">Fee low to high</string>
+    <string name="fee_hl">Fee high to low</string>
+
     <!--Placeholders-->
     <string name="subject_desc">Short description about the subject</string>
     <string name="subject_specific">Specific Subject</string>

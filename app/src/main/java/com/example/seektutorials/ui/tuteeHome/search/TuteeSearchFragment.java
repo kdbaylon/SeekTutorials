@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,26 +57,27 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class TuteeSearchFragment extends Fragment {
     private FirebaseAuth mAuth;
+    private FirestoreRecyclerOptions<Subjectt> options;
+    private RecyclerView mRecyclerView;
+    private Query query;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        Client client = new Client("0GFQ4WANR0", "95103181e72e463ceac084cb275db1c5");
-//        Index index = client.getIndex("subjects");
-
         setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.tutee_search, null);
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
         uid=mAuth.getCurrentUser().getUid();
+        final Button sortButton = view.findViewById(R.id.sort_button);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        Query query = db.collection("subjects").limit(10).orderBy("name");
+        query = db.collection("subjects").orderBy("name",Query.Direction.DESCENDING);
+        options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
         //show subjects
-        FirestoreRecyclerOptions<Subjectt> options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
-        final FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
+        FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
             @Override
             public void onBindViewHolder(TuteeSearchFragment.TuteeSubjectCardViewHolder holder, int position, Subjectt model) {
                 holder.setName(model.getName());
@@ -119,7 +121,6 @@ public class TuteeSearchFragment extends Fragment {
                     }
                 });
             }
-
             @Override
             public TuteeSearchFragment.TuteeSubjectCardViewHolder onCreateViewHolder(ViewGroup group, int i) {
                 // Using a custom layout for each item, we create a new instance of the viewholder
@@ -131,10 +132,250 @@ public class TuteeSearchFragment extends Fragment {
         };
         //make adapter listen so it updates
         adapter.startListening();
-
         mRecyclerView.setAdapter(adapter);
+        //sort button
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu p = new PopupMenu(getActivity(), sortButton);
+                p.getMenuInflater().inflate(R.menu.sort_menu, p .getMenu());
+                p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if(item.getTitle().equals("Subject A-Z")){
+                            query= db.collection("subjects").orderBy("name",Query.Direction.ASCENDING);
+                            options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
+                            FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
+                                @Override
+                                public void onBindViewHolder(TuteeSearchFragment.TuteeSubjectCardViewHolder holder, int position, Subjectt model) {
+                                    holder.setName(model.getName());
+                                    holder.setDescription(model.getDescription());
+                                    holder.setWeekly_sched(model.getWeekly_sched());
+                                    holder.setTime(model.getTime());
+                                    holder.setFee(model.getFee());
+                                    holder.setTutorFname(model.getTutorUID());
+                                    holder.setTutorLname(model.getTutorUID());
+                                    holder.setProfilepic(model.getTutorUID());
+                                    holder.setDesc(model.getTutorUID());
+                                    final String tutorUID=model.getTutorUID();
+                                    final String subjUUID=model.getSubjUUID();
+                                    holder.book.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            DialogFragment nextFrag= TuteeBookSessionFragment.newInstance(subjUUID,tutorUID);
+                                            nextFrag.show(getActivity().getSupportFragmentManager(),"Book");
+                                        }
+                                    });
+                                    holder.view_tutor.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Fragment nextFrag= ViewTutorProfileFragment.newInstance(tutorUID);
+                                            getActivity().getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        }
+                                    });
+                                    holder.message.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Fragment nextFrag= ChatRoomFragment.newInstance(tutorUID);
+                                            getActivity().getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        }
+                                    });
+                                }
+                                @Override
+                                public TuteeSearchFragment.TuteeSubjectCardViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                                    // Using a custom layout for each item, we create a new instance of the viewholder
+                                    View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tutee_subject_card, group, false);
+                                    return new TuteeSearchFragment.TuteeSubjectCardViewHolder(view);
+                                }
+                            };
+                            adapter.startListening();
+                            mRecyclerView.setAdapter(adapter);
+                        }else if(item.getTitle().equals("Subject Z-A")){
+                            query = db.collection("subjects").orderBy("name",Query.Direction.DESCENDING);
+                            options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
+                            FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
+                                @Override
+                                public void onBindViewHolder(TuteeSearchFragment.TuteeSubjectCardViewHolder holder, int position, Subjectt model) {
+                                    holder.setName(model.getName());
+                                    holder.setDescription(model.getDescription());
+                                    holder.setWeekly_sched(model.getWeekly_sched());
+                                    holder.setTime(model.getTime());
+                                    holder.setFee(model.getFee());
+                                    holder.setTutorFname(model.getTutorUID());
+                                    holder.setTutorLname(model.getTutorUID());
+                                    holder.setProfilepic(model.getTutorUID());
+                                    holder.setDesc(model.getTutorUID());
+                                    final String tutorUID=model.getTutorUID();
+                                    final String subjUUID=model.getSubjUUID();
+                                    holder.book.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            DialogFragment nextFrag= TuteeBookSessionFragment.newInstance(subjUUID,tutorUID);
+                                            nextFrag.show(getActivity().getSupportFragmentManager(),"Book");
+                                        }
+                                    });
+                                    holder.view_tutor.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Fragment nextFrag= ViewTutorProfileFragment.newInstance(tutorUID);
+                                            getActivity().getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        }
+                                    });
+                                    holder.message.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Fragment nextFrag= ChatRoomFragment.newInstance(tutorUID);
+                                            getActivity().getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        }
+                                    });
+                                }
+                                @Override
+                                public TuteeSearchFragment.TuteeSubjectCardViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                                    // Using a custom layout for each item, we create a new instance of the viewholder
+                                    View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tutee_subject_card, group, false);
+                                    return new TuteeSearchFragment.TuteeSubjectCardViewHolder(view);
+                                }
+                            };
+                            adapter.startListening();
+                            mRecyclerView.setAdapter(adapter);
+                        }else if(item.getTitle().equals("Fee low to high")){
+                            query = db.collection("subjects").orderBy("fee",Query.Direction.ASCENDING);
+                            options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
+                            FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
+                                @Override
+                                public void onBindViewHolder(TuteeSearchFragment.TuteeSubjectCardViewHolder holder, int position, Subjectt model) {
+                                    holder.setName(model.getName());
+                                    holder.setDescription(model.getDescription());
+                                    holder.setWeekly_sched(model.getWeekly_sched());
+                                    holder.setTime(model.getTime());
+                                    holder.setFee(model.getFee());
+                                    holder.setTutorFname(model.getTutorUID());
+                                    holder.setTutorLname(model.getTutorUID());
+                                    holder.setProfilepic(model.getTutorUID());
+                                    holder.setDesc(model.getTutorUID());
+                                    final String tutorUID=model.getTutorUID();
+                                    final String subjUUID=model.getSubjUUID();
+                                    holder.book.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            DialogFragment nextFrag= TuteeBookSessionFragment.newInstance(subjUUID,tutorUID);
+                                            nextFrag.show(getActivity().getSupportFragmentManager(),"Book");
+                                        }
+                                    });
+                                    holder.view_tutor.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Fragment nextFrag= ViewTutorProfileFragment.newInstance(tutorUID);
+                                            getActivity().getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        }
+                                    });
+                                    holder.message.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Fragment nextFrag= ChatRoomFragment.newInstance(tutorUID);
+                                            getActivity().getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        }
+                                    });
+                                }
+                                @Override
+                                public TuteeSearchFragment.TuteeSubjectCardViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                                    // Using a custom layout for each item, we create a new instance of the viewholder
+                                    View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tutee_subject_card, group, false);
+                                    return new TuteeSearchFragment.TuteeSubjectCardViewHolder(view);
+                                }
+                            };
+                            adapter.startListening();
+                            mRecyclerView.setAdapter(adapter);
+                        }else if(item.getTitle().equals("Fee high to low")){
+                            query = db.collection("subjects").orderBy("fee",Query.Direction.DESCENDING);
+                            options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
+                            FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder> adapter = new FirestoreRecyclerAdapter<Subjectt, TuteeSearchFragment.TuteeSubjectCardViewHolder>(options) {
+                                @Override
+                                public void onBindViewHolder(TuteeSearchFragment.TuteeSubjectCardViewHolder holder, int position, Subjectt model) {
+                                    holder.setName(model.getName());
+                                    holder.setDescription(model.getDescription());
+                                    holder.setWeekly_sched(model.getWeekly_sched());
+                                    holder.setTime(model.getTime());
+                                    holder.setFee(model.getFee());
+                                    holder.setTutorFname(model.getTutorUID());
+                                    holder.setTutorLname(model.getTutorUID());
+                                    holder.setProfilepic(model.getTutorUID());
+                                    holder.setDesc(model.getTutorUID());
+                                    final String tutorUID=model.getTutorUID();
+                                    final String subjUUID=model.getSubjUUID();
+                                    holder.book.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            DialogFragment nextFrag= TuteeBookSessionFragment.newInstance(subjUUID,tutorUID);
+                                            nextFrag.show(getActivity().getSupportFragmentManager(),"Book");
+                                        }
+                                    });
+                                    holder.view_tutor.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Fragment nextFrag= ViewTutorProfileFragment.newInstance(tutorUID);
+                                            getActivity().getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        }
+                                    });
+                                    holder.message.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Fragment nextFrag= ChatRoomFragment.newInstance(tutorUID);
+                                            getActivity().getSupportFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag)
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        }
+                                    });
+                                }
+                                @Override
+                                public TuteeSearchFragment.TuteeSubjectCardViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                                    // Using a custom layout for each item, we create a new instance of the viewholder
+                                    View view = LayoutInflater.from(group.getContext()).inflate(R.layout.tutee_subject_card, group, false);
+                                    return new TuteeSearchFragment.TuteeSubjectCardViewHolder(view);
+                                }
+                            };
+                            adapter.startListening();
+                            mRecyclerView.setAdapter(adapter);
+                        }
+
+                        return true;
+                    }
+                });
+                p.show();
+            }
+        });
         return view;
     }
+
     public class TuteeSubjectCardViewHolder extends RecyclerView.ViewHolder{
         public TextView name, description, weekly_sched, time, fee, tutorFname, tutorLname, desc;
         public Button book, view_tutor, message;
@@ -248,7 +489,10 @@ public class TuteeSearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 //called when search button is pressed
-                searchData(s);
+                Query query = db.collection("subjects").whereEqualTo("name",s);
+                //show subjects
+                FirestoreRecyclerOptions<Subjectt> options = new FirestoreRecyclerOptions.Builder<Subjectt>().setQuery(query, Subjectt.class).build();
+
                 return false;
             }
 
@@ -259,23 +503,6 @@ public class TuteeSearchFragment extends Fragment {
             }
         });
     }
-    public void searchData(String s){
-        db.collection("subjects").whereEqualTo("subject",s.toLowerCase())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (DocumentSnapshot doc: task.getResult()){
 
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
 }
