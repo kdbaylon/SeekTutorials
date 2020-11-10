@@ -2,7 +2,10 @@ package com.example.seektutorials.ui.register;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +60,28 @@ public class TuteeSignUpFragment extends Fragment {
                 registerTutee(view);
             }
         });
+        confirmPasswordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!passwordEditText.getText().toString().equals(editable.toString())){
+                    confirmPasswordEditText.setError("Passwords do not match!");
+                }
+            }
+        });
+
         return view;
+    }
+    public boolean isEmail(TextInputEditText text) {
+        CharSequence email = text.getText().toString();
+        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
     public void registerTutee(View view){
         // Take the values
@@ -70,32 +94,36 @@ public class TuteeSignUpFragment extends Fragment {
         course = courseEditText.getText().toString();
         location = locationEditText.getText().toString();
         //errors
+        //errors
         if (TextUtils.isEmpty(fname)) {
-            Toast.makeText(getActivity(), "Enter first name!", Toast.LENGTH_SHORT).show();
+            fnameEditText.setError("This is required");
             return;
         }
         if (TextUtils.isEmpty(lname)) {
-            Toast.makeText(getActivity(), "Enter last name!", Toast.LENGTH_SHORT).show();
+            lnameEditText.setError("This is required");
             return;
         }
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getActivity(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            emailEditText.setError("This is required");
             return;
+        }
+        if (!isEmail(emailEditText)) {
+            emailEditText.setError("Enter valid email!");
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getActivity(), "Enter password!", Toast.LENGTH_SHORT).show();
+            passwordEditText.setError("This is required");
             return;
         }
-        if(!(password.equals(confirmPassword))){
-            Toast.makeText(getActivity(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+        if ((password.length()<8)) {
+            passwordEditText.setError("Password must be 8 characters long");
             return;
         }
         if (TextUtils.isEmpty(course)) {
-            Toast.makeText(getActivity(), "Enter course!", Toast.LENGTH_SHORT).show();
+            courseEditText.setError("This is required");
             return;
         }
         if (TextUtils.isEmpty(location)) {
-            Toast.makeText(getActivity(), "Enter city!", Toast.LENGTH_SHORT).show();
+            locationEditText.setError("This is required");
             return;
         }
         final Map<String, Object> user = new HashMap<>();
