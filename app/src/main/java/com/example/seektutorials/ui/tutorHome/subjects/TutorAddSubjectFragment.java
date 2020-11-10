@@ -91,7 +91,7 @@ public class TutorAddSubjectFragment extends DialogFragment {
         fee = feeEditText.getText().toString();
         time = timeEditText.getText().toString();
         weekly_sched = daysEditText.getText().toString();
-        tutorUID=uid.toString();
+        tutorUID= uid;
         //errors
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(getActivity(), "Enter subject name!", Toast.LENGTH_SHORT).show();
@@ -144,7 +144,7 @@ public class TutorAddSubjectFragment extends DialogFragment {
         final Map<String, Object> subject0 =new HashMap<>();
         subject0.put("name",name);
         subject0.put("description",description);
-        subject0.put("fee",fee +" per hour");
+        subject0.put("fee",fee +" php per hour");
         subject0.put("time",time);
         subject0.put("weekly_sched",weekly_sched);
         subject0.put("subjUUID",subjUUID);
@@ -155,7 +155,7 @@ public class TutorAddSubjectFragment extends DialogFragment {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
                         Activity act=getActivity();
-                        ((TutorHome)act).onBackPressed();
+                        act.onBackPressed();
 
                     }
                 })
