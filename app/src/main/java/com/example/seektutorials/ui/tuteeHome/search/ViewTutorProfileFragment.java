@@ -186,8 +186,8 @@ public class ViewTutorProfileFragment extends Fragment {
         final FirestoreRecyclerAdapter<Review, ViewTutorProfileFragment.TutorReviewCardViewHolder> review_adapter = new FirestoreRecyclerAdapter<Review, ViewTutorProfileFragment.TutorReviewCardViewHolder>(review_options) {
             @Override
             public void onBindViewHolder(ViewTutorProfileFragment.TutorReviewCardViewHolder holder, int position, Review model) {
-                holder.setFname(model.getFname());
-                holder.setLname(model.getLname());
+                holder.setFname(model.getTuteeUID());
+                holder.setLname(model.getTuteeUID());
                 holder.setComment(model.getComment());
                 holder.setSubject(model.getSubject());
                 holder.setRate(model.getRate());
@@ -219,7 +219,6 @@ public class ViewTutorProfileFragment extends Fragment {
     //subject viewholder
     public class TutorSubjectCardViewHolder extends RecyclerView.ViewHolder{
         public TextView name, description, weekly_sched, time, fee;
-        public Button editButton, deleteButton;
         public TutorSubjectCardViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
@@ -261,9 +260,44 @@ public class ViewTutorProfileFragment extends Fragment {
 
         }
         public void setFname(String string) {
-            fname.setText(string);
+            DocumentReference reference = db.collection("users").document(string);
+            reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null && document.exists()){
+                            //get text
+                            String fnamee = document.getString("fname");
+                            fname.setText(fnamee);
+                        } else {
+                            Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
-        public void setLname(String string) {lname.setText(string);}
+        public void setLname(String string) {
+            DocumentReference reference = db.collection("users").document(string);
+            reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document != null && document.exists()){
+                            //get text
+                            String lnamee = document.getString("lname");
+                            lname.setText(lnamee);
+                        }else {
+                            Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });}
         public void setComment(String string) { comment.setText(string); }
         public void setSubject(String string) { subject.setText(string); }
         public void setRate(Float f) {
