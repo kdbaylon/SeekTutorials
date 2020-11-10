@@ -104,7 +104,7 @@ public class TutorEditSubjectFragment extends DialogFragment {
                         String time =document.getString("time");
                         String weekly_sched =document.getString("weekly_sched");
                         //split subj name  and subj no
-                        String tok[] = subj.split("(?<=\\D)(?=\\d+\\b)");
+                        String[] tok = subj.split("(?<=\\D)(?=\\d+\\b)");
                         String sname = tok[0];
                         String sno = tok[1];
                         String feee =fee.replaceAll(" per hour","");
@@ -144,7 +144,7 @@ public class TutorEditSubjectFragment extends DialogFragment {
         fee = feeEditText.getText().toString();
         time = timeEditText.getText().toString();
         weekly_sched = daysEditText.getText().toString();
-        tutorUID=uid.toString();
+        tutorUID= uid;
         //errors
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(getActivity(), "Enter subject name!", Toast.LENGTH_SHORT).show();
@@ -174,6 +174,7 @@ public class TutorEditSubjectFragment extends DialogFragment {
         subject.put("time",time);
         subject.put("weekly_sched",weekly_sched);
         subject.put("tutorUID",tutorUID);
+        subject.put("subjUUID",subjUUID);
         //add to subject collection
         //String subjUUID=UUID.randomUUID().toString();
         db.collection("subjects").document(subjUUID)
@@ -206,7 +207,7 @@ public class TutorEditSubjectFragment extends DialogFragment {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
                         Activity act=getActivity();
-                        ((TutorHome)act).onBackPressed();
+                        act.onBackPressed();
 
                     }
                 })
