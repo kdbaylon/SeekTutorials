@@ -169,7 +169,7 @@ public class TutorEditSubjectFragment extends DialogFragment {
         final Map<String, Object> subject =new HashMap<>();
         subject.put("name",name);
         subject.put("description",description);
-        subject.put("fee",fee +" per hour");
+        subject.put("fee",fee +" php per hour");
         subject.put("time",time);
         subject.put("weekly_sched",weekly_sched);
         subject.put("tutorUID",tutorUID);
