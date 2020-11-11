@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.seektutorials.R;
-import com.example.seektutorials.ui.chat.ChatRoomFragment;
 import com.example.seektutorials.ui.login.LoginActivity;
-import com.example.seektutorials.ui.register.TuteeSignUpFragment;
-import com.example.seektutorials.ui.register.TutorSignUpFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 

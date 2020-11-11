@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.tuteeHome.bookings.Session;
-import com.example.seektutorials.ui.tuteeHome.bookings.TuteeBookingsAcceptedFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;

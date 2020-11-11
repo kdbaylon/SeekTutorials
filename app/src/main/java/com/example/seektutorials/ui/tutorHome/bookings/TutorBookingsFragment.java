@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.seektutorials.R;
-import com.example.seektutorials.ui.tutorHome.bookings.PagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -22,8 +21,8 @@ public class TutorBookingsFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tutor_bookings, null);
-        TabLayout tabLayout = (TabLayout)rootView.findViewById(R.id.tabs);
-        final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
+        TabLayout tabLayout = rootView.findViewById(R.id.tabs);
+        final ViewPager viewPager = rootView.findViewById(R.id.viewpager);
         final PagerAdapter adapter = new PagerAdapter
                 (getChildFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);

@@ -2,9 +2,6 @@ package com.example.seektutorials.ui.chat;
 
 import com.google.firebase.Timestamp;
 
-import java.sql.Time;
-import java.util.Date;
-
 public class Chat {
     String UID, message;
     Timestamp timestamp;

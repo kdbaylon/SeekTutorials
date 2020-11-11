@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,9 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.seektutorials.R;
 import com.example.seektutorials.ui.chat.ChatRoomFragment;
 import com.example.seektutorials.ui.tutorHome.reviews.Review;
-import com.example.seektutorials.ui.tutorHome.reviews.TutorReviewsFragment;
 import com.example.seektutorials.ui.tutorHome.subjects.Subject;
-import com.example.seektutorials.ui.tutorHome.subjects.TutorEditSubjectFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -83,8 +80,8 @@ public class ViewTutorProfileFragment extends Fragment {
         final TextView emailTextView = view.findViewById(R.id.email);
         final RatingBar ratingBarAve = view.findViewById(R.id.rating_bar_ave);
         //subjects and reviews recyclerviews
-        RecyclerView subjects = (RecyclerView) view.findViewById(R.id.subjects_card);
-        RecyclerView reviews = (RecyclerView) view.findViewById(R.id.reviews_card);
+        RecyclerView subjects = view.findViewById(R.id.subjects_card);
+        RecyclerView reviews = view.findViewById(R.id.reviews_card);
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
         uid=mAuth.getCurrentUser().getUid();

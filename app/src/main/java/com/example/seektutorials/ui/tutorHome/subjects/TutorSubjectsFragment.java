@@ -15,18 +15,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.seektutorials.R;
-import com.example.seektutorials.ui.chat.ChatRoomFragment;
-import com.example.seektutorials.ui.tuteeHome.bookings.TuteeBookSessionFragment;
-import com.example.seektutorials.ui.tuteeHome.search.Subjectt;
-import com.example.seektutorials.ui.tuteeHome.search.TuteeSearchFragment;
-import com.example.seektutorials.ui.tuteeHome.search.ViewTutorProfileFragment;
 import com.example.seektutorials.ui.tutorHome.TutorHome;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -49,7 +43,7 @@ public class TutorSubjectsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) view.findViewById(R.id.topAppBar);
+        androidx.appcompat.widget.Toolbar toolbar = view.findViewById(R.id.topAppBar);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
         ((TutorHome)getActivity()).setSupportActionBar(toolbar);
@@ -59,7 +53,7 @@ public class TutorSubjectsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tutor_subjects, null);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        mRecyclerView = view.findViewById(R.id.recyclerView);
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
         uid=mAuth.getCurrentUser().getUid();
@@ -75,7 +69,7 @@ public class TutorSubjectsFragment extends Fragment {
                 holder.setWeekly_sched(model.getWeekly_sched());
                 holder.setTime(model.getTime());
                 holder.setFee(model.getFee());
-                final String subjUUID = model.getSubjUUID().toString();
+                final String subjUUID = model.getSubjUUID();
 
                 //add the data to a bundle to be accessed by other fragments
                 holder.editButton.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +205,7 @@ public class TutorSubjectsFragment extends Fragment {
                         holder.setWeekly_sched(model.getWeekly_sched());
                         holder.setTime(model.getTime());
                         holder.setFee(model.getFee());
-                        final String subjUUID = model.getSubjUUID().toString();
+                        final String subjUUID = model.getSubjUUID();
 
                         //add the data to a bundle to be accessed by other fragments
                         holder.editButton.setOnClickListener(new View.OnClickListener() {

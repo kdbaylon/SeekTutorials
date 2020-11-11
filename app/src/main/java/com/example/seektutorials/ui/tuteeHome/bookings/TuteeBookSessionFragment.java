@@ -51,7 +51,7 @@ public class TuteeBookSessionFragment extends DialogFragment {
     String uid;
     private TextView subjTextView, descTextView, fnameTextView, lnameTextView, feeTextView, weeklySchedTextView,timeTextView,hourlyFeeTextView;
     private EditText datePicker, timePickerStart, timePickerEnd;
-    private Button bookButton,generateFeeButton;
+    private Button generateFeeButton;
     private Calendar c;
     public static TuteeBookSessionFragment newInstance(String string, String string2) {
         Bundle bundle = new Bundle();
@@ -323,7 +323,7 @@ public class TuteeBookSessionFragment extends DialogFragment {
         long minutes = diff.minusHours(hours).toMinutes();
         String totalTimeString = String.format("%02d.%02d", hours, minutes);
         Float total = Float.valueOf(fee) * Float.valueOf(totalTimeString);
-        String finalTotal = String.valueOf(total) + " php";
+        String finalTotal = total + " php";
         feeTextView.setText(finalTotal);
     }
 

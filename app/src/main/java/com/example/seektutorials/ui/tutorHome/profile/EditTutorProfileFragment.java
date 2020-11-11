@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -280,7 +279,7 @@ public class EditTutorProfileFragment extends Fragment {
              public void onSuccess(Void aVoid) {
                Toast.makeText(getActivity(), "Document written.", Toast.LENGTH_SHORT).show();
                  Activity act=getActivity();
-                 ((TutorHome)act).onBackPressed();
+                 act.onBackPressed();
              }
            })
            .addOnFailureListener(new OnFailureListener() {

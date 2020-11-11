@@ -85,12 +85,11 @@ public class TuteeSignUpFragment extends Fragment {
     }
     public void registerTutee(View view){
         // Take the values
-        String fname, lname, email, password, confirmPassword, course, location;
+        String fname, lname, email, password, course, location;
         fname = fnameEditText.getText().toString();
         lname = lnameEditText.getText().toString();
         email = emailEditText.getText().toString();
         password = passwordEditText.getText().toString();
-        confirmPassword = confirmPasswordEditText.getText().toString();
         course = courseEditText.getText().toString();
         location = locationEditText.getText().toString();
         //errors

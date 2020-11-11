@@ -28,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
- * Tutor profile fragment
+ * Tutee profile fragment
  */
 public class TuteeProfileFragment extends Fragment {
     //Firebase
