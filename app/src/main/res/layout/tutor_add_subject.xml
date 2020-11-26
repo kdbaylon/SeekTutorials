@@ -145,24 +145,48 @@
                 android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/time_layout"
-            style="@style/Widget.SeekTutorials.TextInputLayout"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="4dp"
-            android:hint="@string/time"
-            app:layout_constraintTop_toBottomOf="@+id/days_avail_layout"
-            tools:layout_editor_absoluteX="4dp">
+            android:text="@string/time"
+            android:layout_marginStart="15dp"
+            app:layout_constraintTop_toBottomOf="@id/days_avail_layout"/>
+        <LinearLayout
+            android:id="@+id/time_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/days_avail_layout">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/time"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:inputType="text"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/timePickerStart"
+                style="@style/Widget.SeekTutorials.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints="4:00PM"
+                android:clickable="true"
+                android:focusable="false"
+                android:text="@string/enter_time" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TO"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <EditText
+                android:id="@+id/timePickerEnd"
+                style="@style/Widget.SeekTutorials.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints="5:00PM"
+                android:clickable="true"
+                android:focusable="false"
+                android:text="@string/enter_time" />
+        </LinearLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/rate_layout"
             style="@style/Widget.SeekTutorials.TextInputLayout"

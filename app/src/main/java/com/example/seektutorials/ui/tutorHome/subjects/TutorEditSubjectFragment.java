@@ -1,6 +1,8 @@
 package com.example.seektutorials.ui.tutorHome.subjects;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,14 +30,19 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class TutorEditSubjectFragment extends DialogFragment {
     String subjUUID;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private TextInputEditText subjNoEditText, subjDescEditText, daysEditText, timeEditText, feeEditText;
+    private TextInputEditText subjNoEditText, subjDescEditText, daysEditText, feeEditText;
+    private EditText timePickerStart, timePickerEnd;
+    private Calendar c;
     private AutoCompleteTextView selectSubject;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String uid;
@@ -59,6 +68,7 @@ public class TutorEditSubjectFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.tutor_edit_subject, container, false);
+        c= Calendar.getInstance();
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -69,7 +79,8 @@ public class TutorEditSubjectFragment extends DialogFragment {
         subjNoEditText=view.findViewById(R.id.subj_no);
         subjDescEditText=view.findViewById(R.id.subj_desc);
         daysEditText=view.findViewById(R.id.days);
-        timeEditText=view.findViewById(R.id.time);
+        timePickerStart = view.findViewById(R.id.timePickerStart);
+        timePickerEnd = view.findViewById(R.id.timePickerEnd);
         feeEditText=view.findViewById(R.id.fee);
 
         // Create the instance of ArrayAdapter with the subjects
@@ -106,13 +117,18 @@ public class TutorEditSubjectFragment extends DialogFragment {
                         String[] tok = subj.split("(?<=\\D)(?=\\d+\\b)");
                         String sname = tok[0];
                         String sno = tok[1];
+                        //split time start and end
+                        String[] oras = time.split("-");
+                        String timeS = oras[0];
+                        String timeE = oras[1];
                         String feee =fee.replaceAll(" per hour","");
                         //set text
                         selectSubject.setText(sname);
                         subjNoEditText.setText(sno);
                         subjDescEditText.setText(desc);
                         feeEditText.setText(feee);
-                        timeEditText.setText(time);
+                        timePickerStart.setText(timeS);
+                        timePickerEnd.setText(timeE);
                         daysEditText.setText(weekly_sched);
                     } else {
                         Toast.makeText(getActivity(), "Error getting document", Toast.LENGTH_SHORT).show();
@@ -123,6 +139,37 @@ public class TutorEditSubjectFragment extends DialogFragment {
             }
         });
 
+        //timepickers
+        final TimePickerDialog.OnTimeSetListener timeStart = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                c.set(Calendar.HOUR_OF_DAY, hour);
+                c.set(Calendar.MINUTE, minute);
+                updateTimeStartLabel();
+            }
+        };
+        final TimePickerDialog.OnTimeSetListener timeEnd = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                c.set(Calendar.HOUR_OF_DAY, hour);
+                c.set(Calendar.MINUTE, minute);
+                updateTimeEndLabel();
+            }
+        };
+        timePickerStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TimePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, timeStart, c
+                        .get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),false).show();
+            }
+        });
+        timePickerEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TimePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, timeEnd, c
+                        .get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE), false).show();
+            }
+        });
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,11 +184,12 @@ public class TutorEditSubjectFragment extends DialogFragment {
 
     public void editSubject(){
         //Take the values
-        final String name, description, fee, time, weekly_sched, tutorUID;
+        final String name, description, fee, timeStart, timeEnd, weekly_sched, tutorUID;
         name = selectSubject.getText().toString()+subjNoEditText.getText().toString();
         description = subjDescEditText.getText().toString();
         fee = feeEditText.getText().toString();
-        time = timeEditText.getText().toString();
+        timeStart = timePickerStart.getText().toString();
+        timeEnd = timePickerEnd.getText().toString();
         weekly_sched = daysEditText.getText().toString();
         tutorUID= uid;
         //errors
@@ -157,8 +205,12 @@ public class TutorEditSubjectFragment extends DialogFragment {
             Toast.makeText(getActivity(), "Enter fee per hour!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (TextUtils.isEmpty(time)) {
-            Toast.makeText(getActivity(), "Enter time!", Toast.LENGTH_SHORT).show();
+        if (timeStart.equals("Enter time")) {
+            Toast.makeText(getActivity(), "Enter time start!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (timeEnd.equals("Enter time")) {
+            Toast.makeText(getActivity(), "Enter time end!", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(weekly_sched)) {
@@ -170,7 +222,7 @@ public class TutorEditSubjectFragment extends DialogFragment {
         subject.put("name",name);
         subject.put("description",description);
         subject.put("fee",fee +" php per hour");
-        subject.put("time",time);
+        subject.put("time",timeStart+"-"+timeEnd);
         subject.put("weekly_sched",weekly_sched);
         subject.put("tutorUID",tutorUID);
         subject.put("subjUUID",subjUUID);
@@ -196,7 +248,7 @@ public class TutorEditSubjectFragment extends DialogFragment {
         subject0.put("name",name);
         subject0.put("description",description);
         subject0.put("fee",fee +" php per hour");
-        subject0.put("time",time);
+        subject0.put("time",timeStart+"-"+timeEnd);
         subject0.put("weekly_sched",weekly_sched);
         subject0.put("subjUUID",subjUUID);
         db.collection("users").document(uid).collection("subjects").document(subjUUID)
@@ -217,6 +269,16 @@ public class TutorEditSubjectFragment extends DialogFragment {
                     }
                 });
 
+    }
+    private void updateTimeStartLabel() {
+        String myFormat = "hh:mm a";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        timePickerStart.setText(sdf.format(c.getTime()));
+    }
+    private void updateTimeEndLabel() {
+        String myFormat = "hh:mm a";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        timePickerEnd.setText(sdf.format(c.getTime()));
     }
 
 }

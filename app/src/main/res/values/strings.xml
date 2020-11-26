@@ -57,7 +57,7 @@
     <string name="cancel">Cancel</string>
     <string name="subj_no">Subj. No.</string>
     <string name="days_avail">Days Available (ex. "MWF", "TTh")</string>
-    <string name="time">Time (ex. "1PM-4PM","8AM-10AM")</string>
+    <string name="time">Time Available</string>
     <string name="fee">Hourly Fee (ex. "200")</string>
     <string name="delete_subject">Delete Subject?</string>
     <!--booking-->
