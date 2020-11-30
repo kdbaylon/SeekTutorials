@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -44,6 +47,8 @@ import java.util.UUID;
 
 
 public class TuteeBookSessionFragment extends DialogFragment {
+    Boolean isSchedFree;
+    private String schedule;
     String subjUUID,tutorUID;
     String fee;
     private FirebaseAuth mAuth;
@@ -217,7 +222,7 @@ public class TuteeBookSessionFragment extends DialogFragment {
                 .setPositiveButton("Book",
                         new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, int whichButton) {
-                                //no total fee error
+                                //error
                                 if (TextUtils.isEmpty(feeTextView.getText())) {
                                     Toast.makeText(getActivity(), "Click generate total fee!", Toast.LENGTH_SHORT).show();
                                 }
@@ -227,56 +232,61 @@ public class TuteeBookSessionFragment extends DialogFragment {
                                 if (datePicker.getText().toString().equals("Enter date")) {
                                     Toast.makeText(getActivity(), "Enter date!", Toast.LENGTH_SHORT).show();
                                 }
-                                //generate rand uuid for each document of booking session
-                                final String bookingUUID = UUID.randomUUID().toString();
-                                //put in a hashmap
-                                final Map<String, Object> book_tutee =new HashMap<>();
-                                book_tutee.put("bookingUUID",bookingUUID);
-                                book_tutee.put("uid",tutorUID);
-                                book_tutee.put("subject",subjUUID);
-                                book_tutee.put("sched",datePicker.getText().toString()+ " " +timePickerStart.getText().toString()+"-"+timePickerEnd.getText().toString());
-                                book_tutee.put("fee",feeTextView.getText().toString());
-                                book_tutee.put("status","pending");
+                                //check if schedule is already booked
+                                if(isSchedFree){
+                                    //generate rand uuid for each document of booking session
+                                    final String bookingUUID = UUID.randomUUID().toString();
+                                    //put in a hashmap
+                                    final Map<String, Object> book_tutee =new HashMap<>();
+                                    book_tutee.put("bookingUUID",bookingUUID);
+                                    book_tutee.put("uid",tutorUID);
+                                    book_tutee.put("subject",subjUUID);
+                                    book_tutee.put("sched",schedule);
+                                    book_tutee.put("fee",feeTextView.getText().toString());
+                                    book_tutee.put("status","pending");
 
-                                final Map<String, Object> book_tutor =new HashMap<>();
-                                book_tutor.put("bookingUUID",bookingUUID);
-                                book_tutor.put("uid",uid);
-                                book_tutor.put("subject",subjUUID);
-                                book_tutor.put("sched",datePicker.getText().toString()+ " " +timePickerStart.getText().toString()+"-"+timePickerEnd.getText().toString());
-                                book_tutor.put("fee",feeTextView.getText().toString());
-                                book_tutor.put("status","pending");
+                                    final Map<String, Object> book_tutor =new HashMap<>();
+                                    book_tutor.put("bookingUUID",bookingUUID);
+                                    book_tutor.put("uid",uid);
+                                    book_tutor.put("subject",subjUUID);
+                                    book_tutor.put("sched",schedule);
+                                    book_tutor.put("fee",feeTextView.getText().toString());
+                                    book_tutor.put("status","pending");
 
-                                //put in booking collection of both users
+                                    //put in booking collection of both users
 
-                                db.collection("users").document(uid).collection("bookings").document(bookingUUID)
-                                        .set(book_tutee)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                db.collection("users").document(tutorUID).collection("bookings").document(bookingUUID)
-                                                        .set(book_tutor)
-                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
-                                                                dialog.dismiss();
-                                                            }
-                                                        })
-                                                        .addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                Toast.makeText(getActivity(), "Tutoring session booking failed.", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
+                                    db.collection("users").document(uid).collection("bookings").document(bookingUUID)
+                                            .set(book_tutee)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    db.collection("users").document(tutorUID).collection("bookings").document(bookingUUID)
+                                                            .set(book_tutor)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    dialog.dismiss();
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    Toast.makeText(getActivity(), "Tutoring session booking failed.", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
 
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(getActivity(), "Tutoring session booking failed.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(getActivity(), "Tutoring session booking failed.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
 
+                                }else{
+                                    Toast.makeText(getActivity(), "This schedule is already booked", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                 )
@@ -312,6 +322,7 @@ public class TuteeBookSessionFragment extends DialogFragment {
         timePickerEnd.setText(sdf.format(c.getTime()));
     }
     private void getTimeDifference(){
+        schedule = datePicker.getText().toString()+ " " +timePickerStart.getText().toString()+"-"+timePickerEnd.getText().toString();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
 
         LocalTime start = LocalTime.parse(timePickerStart.getText().toString(), timeFormatter);
@@ -325,6 +336,46 @@ public class TuteeBookSessionFragment extends DialogFragment {
         Float total = Float.valueOf(fee) * Float.valueOf(totalTimeString);
         String finalTotal = total + " php";
         feeTextView.setText(finalTotal);
+        schedChecker(schedule);
+    }
+    private void schedChecker(final String s){
+        final Query acceptedTutorSched = db.collection("users").document(tutorUID).collection("bookings").whereEqualTo("status","accepted").whereEqualTo("sched", s);
+        final Query acceptedTuteeSched = db.collection("users").document(uid).collection("bookings").whereEqualTo("status","accepted").whereEqualTo("sched", s);
+        acceptedTutorSched.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    isSchedFree = task.getResult().isEmpty();
+                    if (isSchedFree){
+                        acceptedTuteeSched.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    isSchedFree = task.getResult().isEmpty();
+                                    if (isSchedFree){
+
+                                    }else{
+                                        Toast.makeText(getActivity(), "This schedule is booked", Toast.LENGTH_SHORT).show();
+                                    }
+
+
+                                } else {
+                                    Toast.makeText(getActivity(), "Schedule is available", Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                    }else{
+                        Toast.makeText(getActivity(), "This schedule is booked", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } else {
+                    Toast.makeText(getActivity(), "Schedule is available", Toast.LENGTH_SHORT).show();
+                    Log.d("TAG", "Error getting documents: ", task.getException());
+                }
+            }
+        });
     }
 
 
